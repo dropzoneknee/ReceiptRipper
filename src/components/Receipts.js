@@ -1,4 +1,4 @@
-export default function Seats(props) {
+export default function Receipts(props) {
   return (
     <div className="howMany flex justify-center items-center grow ">
       <div className="flex flex-col justify-center">
