@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Receipts from "@/components/Receipts";
 import ReceiptsAction from "@/components/ReceiptsAction";
+import SubtotalAction from "@/components/SubtotalAction";
+import Keypad from "@/components/Keypad";
 
 export default function Home() {
   const [seatAmount, setSeatAmount] = useState(2);
@@ -15,6 +17,7 @@ export default function Home() {
 
   const [showReceiptCount, setShowReceiptCount] = useState(true);
   const [showSubtotal, setShowSubtotal] = useState(false);
+  const [subtotalNumberChecker, setSubtotalNumberChecker] = useState(0);
 
   function addSeat() {
     if (seatAmount < 9) setSeatAmount(seatAmount + 1);
@@ -29,19 +32,45 @@ export default function Home() {
     setShowSubtotal(true);
   }
 
+  function changeSubtotal(num) {
+    if (subtotalNumberChecker < 9) {
+      setSubtotalNumberChecker(subtotalNumberChecker + 1);
+      const MOVE_SUBTOTAL_DECIMAL = Math.round(subtotal * 100) * 10;
+      const ADD_NUM_AND_MOVE_DECIMAL = (MOVE_SUBTOTAL_DECIMAL + num) / 100;
+      setSubtotal(ADD_NUM_AND_MOVE_DECIMAL);
+    }
+  }
+
+  function subtractSubtotal() {
+    subtotalNumberChecker > 0
+      ? setSubtotalNumberChecker(subtotalNumberChecker - 1)
+      : null;
+    const SET_SUBTOTAL_TO_DECIMAL_THEN_ROUND = Math.floor(subtotal * 10);
+    const SET_SUBTOTAL_BACK = SET_SUBTOTAL_TO_DECIMAL_THEN_ROUND / 100;
+    setSubtotal(SET_SUBTOTAL_BACK);
+  }
+
+  function toReceiptsPage() {
+    setShowReceiptCount(true);
+    setShowSubtotal(false);
+  }
+
+  function toItemEntryPage() {}
+
   return (
     <main className="bg-slate-300 h-screen flex justify-center items-center">
-      <div className="max-w-md h-screen bg-white overflow-hidden flex-col grow">
+      <div className="max-w-md h-screen bg-white overflow-hidden flex-col grow ">
         <div className="actionScreen h-2/3 overflow-hidden flex">
           {showReceiptCount ? (
             <ReceiptsAction toSubtotalPage={toSubtotalPage} />
           ) : null}
-          <div className="flex justify-center items-center grow">
-            <div className="flex-col items-center justify-center">
-              <h2 className="text-2xl">enter subtotal</h2>
-              <h1 className="text-2xl">{subtotal}</h1>
-            </div>
-          </div>
+          {showSubtotal ? (
+            <SubtotalAction
+              toReceiptsPage={toReceiptsPage}
+              toItemEntryPage={toItemEntryPage}
+              subtotal={subtotal}
+            />
+          ) : null}
         </div>
         <div className="interactionScreen h-1/3 bg-primary text-white overflow-hidden flex">
           {showReceiptCount ? (
@@ -52,29 +81,10 @@ export default function Home() {
             />
           ) : null}
           {showSubtotal ? (
-            <div className="flex subtotalScreen justify-center grow items-center">
-              <div className="flex-col">
-                <div className="flex gap-10 mb-6">
-                  <button className="text-5xl">1</button>
-                  <button className="text-5xl">2</button>
-                  <button className="text-5xl">3</button>
-                </div>
-                <div className="flex gap-10 mb-6">
-                  <button className="text-5xl">4</button>
-                  <button className="text-5xl">5</button>
-                  <button className="text-5xl">6</button>
-                </div>
-                <div className="flex gap-10 mb-6">
-                  <button className="text-5xl">7</button>
-                  <button className="text-5xl">8</button>
-                  <button className="text-5xl">9</button>
-                </div>
-                <div className="flex gap-10 self-end">
-                  <button className="text-5xl">0</button>
-                  <button className="text-3xl">⌫</button>
-                </div>
-              </div>
-            </div>
+            <Keypad
+              changeState={changeSubtotal}
+              subtractState={subtractSubtotal}
+            />
           ) : null}
         </div>
       </div>
