@@ -19,12 +19,18 @@ export default function SubtotalAction(props) {
         </div>
       </div>
       <div className="h-1/5 flex items-end mr-4 ml-4">
-        <button className="text-8xl" onClick={props.toReceiptsPage}>
+        <button
+          className="text-8xl active:opacity-30"
+          onClick={props.toReceiptsPage}
+        >
           ←
         </button>
         <div className="grow"></div>
         {props.subtotal > 0 ? (
-          <button className="text-8xl" onClick={props.toItemEntryPage}>
+          <button
+            className="text-8xl active:opacity-30"
+            onClick={props.toItemEntryPage}
+          >
             →
           </button>
         ) : null}
