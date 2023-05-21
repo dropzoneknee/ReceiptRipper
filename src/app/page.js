@@ -40,6 +40,7 @@ export default function Home() {
   const [showSubtotal, setShowSubtotal] = useState(false);
   const [showItemEntry, setShowItemEntry] = useState(false);
   const [splitItems, setSplitItems] = useState([]);
+  const [splitAmount, setSplitAmount] = useState(0);
 
   function addReceipt() {
     if (receiptAmount < 6) {
@@ -106,8 +107,10 @@ export default function Home() {
     if (itemCost > 0) {
       if (splitItems.includes(receipt)) {
         setSplitItems((splitItems) => splitItems.filter((i) => i !== receipt));
+        changeSplitAmount(-1);
       } else {
         setSplitItems((splitItems) => [...splitItems, receipt]);
+        changeSplitAmount(1);
       }
 
       const newState = receiptDetails.map((obj) => {
@@ -121,7 +124,31 @@ export default function Home() {
     }
   }
 
-  function splitComplete() {}
+  function splitComplete() {
+    if (splitItems.length > 0) {
+      const newReceiptDetails = receiptDetails.map((receipt) => {
+        if (splitItems.includes(receipt.id)) {
+          return {
+            ...receipt,
+            active: false,
+            total: receipt.total + splitAmount,
+            items: [...receipt.items, splitAmount],
+          };
+        }
+        return receipt;
+      });
+
+      setItemCost(0);
+      setSplitAmount(0);
+      setSplitItems([]);
+      setReceiptDetails(newReceiptDetails);
+      setRemainingSubtotal(remainingSubtotal - itemCost);
+    }
+  }
+
+  function changeSplitAmount(opr) {
+    setSplitAmount(itemCost / (splitItems.length + parseInt(opr)));
+  }
 
   function toReceiptsPage() {
     setShowReceiptCount(true);
@@ -161,6 +188,8 @@ export default function Home() {
               toSubtotalPage={toSubtotalPage}
               toTaxAndTip={toTaxAndTip}
               splitItem={splitItem}
+              splitAmount={splitAmount}
+              splitComplete={splitComplete}
             />
           ) : null}
         </div>

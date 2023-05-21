@@ -46,7 +46,9 @@ export default function ItemEntryAction(props) {
             </button>
             <h1>${data.total.toFixed(2)}</h1>
             {data.active ? (
-              <h1 className="opacity-30">&#40;${data.name}&#41;</h1>
+              <h1 className="opacity-30">
+                &#40;${props.splitAmount.toFixed(2)}&#41;
+              </h1>
             ) : null}
           </div>
         ))}
@@ -58,10 +60,10 @@ export default function ItemEntryAction(props) {
           </button>
         </div>
         <div className="grow flex justify-center self-center">
-          <button>add item</button>
+          <button onClick={props.splitComplete}>add item</button>
         </div>
         <div className="w-1/5 flex justify-end">
-          {true ? (
+          {props.remainingSubtotal === 0 ? (
             <button className="text-8xl" onClick={props.toTaxAndTip}>
               →
             </button>

@@ -2,11 +2,14 @@ import Image from "next/image";
 
 export default function ReceiptsAction(props) {
   return (
-    <div className="flex-col grow justify-center items-center">
+    <div className="flex-col flex grow ">
       <div className="h-1/10"></div>
-      <div className="h-8/10 grow grid grid-cols-3">
+      <div className="h-8/10 grow grid grid-cols-3 items-center justify-center">
         {props.receiptDetails.map((data) => (
-          <div className="" key={data.name}>
+          <div
+            className="flex flex-col items-center justify-center"
+            key={data.name}
+          >
             <h1>{data.name}</h1>
             <Image
               src="/receipt.svg"
