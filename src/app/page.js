@@ -291,7 +291,7 @@ export default function Home() {
   }
 
   return (
-    <main className="bg-slate-300 h-screen flex justify-center items-center touch-manipulation">
+    <main className=" h-screen flex justify-center items-center touch-manipulation">
       <div className="max-w-md h-screen bg-white overflow-hidden flex-col grow ">
         <div className="actionScreen h-2/3 overflow-hidden flex">
           {showReceiptCount ? (

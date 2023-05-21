@@ -1,75 +1,76 @@
 export default function Keypad(props) {
   return (
     <div className="flex justify-center grow items-center">
-      <div className="grid grid-cols-3 gap-y-6 gap-x-12">
+      <div className="grid grid-cols-3">
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(1)}
         >
-          1
+          <div className="w-20 h-14 flex items-center justify-center">1</div>
         </button>
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(2)}
         >
-          2
+          <div className="w-20 h-14 flex items-center justify-center">2</div>
         </button>
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(3)}
         >
-          3
+          <div className="w-20 h-14 flex items-center justify-center">3</div>
         </button>
 
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(4)}
         >
-          4
+          <div className="w-20 h-14 flex items-center justify-center">4</div>
         </button>
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(5)}
         >
-          5
+          <div className="w-20 h-14 flex items-center justify-center">5</div>
         </button>
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(6)}
         >
-          6
+          <div className="w-20 h-14 flex items-center justify-center">6</div>
         </button>
 
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(7)}
         >
-          7
+          <div className="w-20 h-14 flex items-center justify-center">7</div>
         </button>
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(8)}
         >
-          8
+          <div className="w-20 h-14 flex items-center justify-center">8</div>
         </button>
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(9)}
         >
-          9
+          <div className="w-20 h-14 flex items-center justify-center">9</div>
         </button>
-        <div className="emptyGrid"></div>
+        <div className="w-20 h-14"></div>
+
         <button
-          className="text-5xl active:opacity-30"
+          className="text-4xl active:opacity-30"
           onClick={() => props.changeState(0)}
         >
-          0
+          <div className="w-20 h-14 flex items-center justify-center">0</div>
         </button>
         <button
           className="text-3xl active:opacity-30"
           onClick={props.subtractState}
         >
-          ⌫
+          <div className="w-20 h-14 flex items-center justify-center">⌫</div>
         </button>
       </div>
     </div>

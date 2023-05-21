@@ -3,25 +3,24 @@ import Image from "next/image";
 export default function ItemEntryAction(props) {
   return (
     <div className="flex-col grow justify-center items-center">
-      <div className="flex justify-center items-center">
-        <div className="flex-col h-2/10">
-          <div className="flex justify-center mb-3">
-            <h2 className="text-2xl">enter item</h2>
-          </div>
-          <div
-            className={
-              props.itemCost == 0
-                ? "opacity-30 flex justify-center mb-3"
-                : "flex justify-center mb-3"
-            }
-          >
-            $<h1 className="text-6xl">{props.itemCost.toFixed(2)}</h1>
-          </div>
-          <h3 className="">
-            remaining subtotal {props.remainingSubtotal.toFixed(2)}
-          </h3>
+      <div className="flex-col flex h-3/10 grow justify-center items-center">
+        <div className="flex justify-center mb-1">
+          <h2 className="text-2xl">enter item</h2>
         </div>
+        <div
+          className={
+            props.itemCost == 0
+              ? "opacity-30 flex justify-center mb-1"
+              : "flex justify-center mb-1"
+          }
+        >
+          $<h1 className="text-6xl">{props.itemCost.toFixed(2)}</h1>
+        </div>
+        <h3 className="">
+          remaining subtotal {props.remainingSubtotal.toFixed(2)}
+        </h3>
       </div>
+
       <div className="h-6/10 grow grid grid-cols-3 justify-center items-center">
         {props.receiptDetails.map((data) => (
           <div
@@ -53,7 +52,7 @@ export default function ItemEntryAction(props) {
           </div>
         ))}
       </div>
-      <div className="h-2/10 flex items-end mr-4 ml-4 grow">
+      <div className="h-1/10 flex items-end mr-4 ml-4 grow ">
         <div className="w-1/5 flex justify-start">
           <button className="text-8xl" onClick={props.toSubtotalPage}>
             ←
