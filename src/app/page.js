@@ -6,6 +6,7 @@ import ReceiptsAction from "@/components/ReceiptsAction";
 import SubtotalAction from "@/components/SubtotalAction";
 import Keypad from "@/components/Keypad";
 import ItemEntryAction from "@/components/ItemEntryAction";
+import TaxOrTipAction from "@/components/TaxOrTipAction";
 
 export default function Home() {
   const initialReceipts = [
@@ -39,8 +40,11 @@ export default function Home() {
   const [showReceiptCount, setShowReceiptCount] = useState(true);
   const [showSubtotal, setShowSubtotal] = useState(false);
   const [showItemEntry, setShowItemEntry] = useState(false);
+  const [showTaxAndTip, setShowTaxAndTip] = useState(false);
   const [splitItems, setSplitItems] = useState([]);
   const [splitAmount, setSplitAmount] = useState(0);
+
+  const [currentActiveMod, setCurrentActiveMod] = useState(0);
 
   function addReceipt() {
     if (receiptAmount < 6) {
@@ -150,6 +154,116 @@ export default function Home() {
     setSplitAmount(itemCost / (splitItems.length + parseInt(opr)));
   }
 
+  function changeTaxOrTip(keypadNum) {
+    let MOVE_DECIMAL, ADD_NUM_AND_MOVE_DECIMAL;
+    switch (currentActiveMod) {
+      case 1:
+        MOVE_DECIMAL = Math.round(tax * 100) * 10;
+        ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
+        if (ADD_NUM_AND_MOVE_DECIMAL < subtotal) {
+          setTax(ADD_NUM_AND_MOVE_DECIMAL);
+          setTaxPercentage((ADD_NUM_AND_MOVE_DECIMAL / subtotal) * 100);
+          setGrandTotal(subtotal + ADD_NUM_AND_MOVE_DECIMAL + tip);
+        }
+        break;
+
+      case 2:
+        MOVE_DECIMAL = Math.round(taxPercentage * 100) * 10;
+        ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
+        if (ADD_NUM_AND_MOVE_DECIMAL < 100) {
+          setTaxPercentage(ADD_NUM_AND_MOVE_DECIMAL);
+          setTax((ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100);
+          setGrandTotal(
+            subtotal + (ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100 + tip
+          );
+        }
+        break;
+
+      case 3:
+        MOVE_DECIMAL = Math.round(tip * 100) * 10;
+        ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
+        if (ADD_NUM_AND_MOVE_DECIMAL < subtotal) {
+          setTip(ADD_NUM_AND_MOVE_DECIMAL);
+          setTipPercentage((ADD_NUM_AND_MOVE_DECIMAL / subtotal) * 100);
+          setGrandTotal(subtotal + ADD_NUM_AND_MOVE_DECIMAL + tax);
+        }
+        break;
+
+      case 4:
+        MOVE_DECIMAL = Math.round(tipPercentage * 100) * 10;
+        ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
+        if (ADD_NUM_AND_MOVE_DECIMAL < 100) {
+          setTipPercentage(ADD_NUM_AND_MOVE_DECIMAL);
+          setTip((ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100);
+          setGrandTotal(
+            subtotal + (ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100 + tax
+          );
+        }
+        break;
+    }
+  }
+
+  function subtractTaxOrTip() {
+    let SET_AMOUNT_TO_DECIMAL_THEN_ROUND;
+    let SET_AMOUNT_BACK;
+
+    switch (currentActiveMod) {
+      case 1:
+        SET_AMOUNT_TO_DECIMAL_THEN_ROUND = Math.floor(tax * 10);
+        SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
+        setTax(SET_AMOUNT_BACK);
+        setTaxPercentage((SET_AMOUNT_BACK / subtotal) * 100);
+        setGrandTotal(subtotal + SET_AMOUNT_BACK + tip);
+        break;
+
+      case 2:
+        SET_AMOUNT_TO_DECIMAL_THEN_ROUND = Math.floor(taxPercentage * 10);
+        SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
+        setTaxPercentage(SET_AMOUNT_BACK);
+        setTax((SET_AMOUNT_BACK * subtotal) / 100);
+        setGrandTotal(subtotal + (SET_AMOUNT_BACK * subtotal) / 100 + tip);
+
+        break;
+
+      case 3:
+        SET_AMOUNT_TO_DECIMAL_THEN_ROUND = Math.floor(tip * 10);
+        SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
+        setTip(SET_AMOUNT_BACK);
+        setTipPercentage((SET_AMOUNT_BACK / subtotal) * 100);
+        setGrandTotal(subtotal + SET_AMOUNT_BACK + tax);
+
+        break;
+
+      case 4:
+        SET_AMOUNT_TO_DECIMAL_THEN_ROUND = Math.floor(tipPercentage * 10);
+        SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
+        setTipPercentage(SET_AMOUNT_BACK);
+        setTip((SET_AMOUNT_BACK * subtotal) / 100);
+        setGrandTotal(subtotal + (SET_AMOUNT_BACK * subtotal) / 100 + tax);
+
+        break;
+    }
+  }
+
+  function activateTipOrTax(num) {
+    setCurrentActiveMod(num);
+    switch (num) {
+      case 1:
+      case 2:
+        setTax(0);
+        setTaxPercentage(0);
+        setGrandTotal(subtotal + tip);
+        break;
+
+      case 3:
+      case 4:
+        setTip(0);
+        setTipPercentage(0);
+        setGrandTotal(subtotal + tax);
+        break;
+    }
+  }
+
   function toReceiptsPage() {
     setShowReceiptCount(true);
     setShowSubtotal(false);
@@ -161,7 +275,11 @@ export default function Home() {
     setRemainingSubtotal(subtotal);
   }
 
-  function toTaxAndTip() {}
+  function toTaxAndTip() {
+    setGrandTotal(subtotal + tax + tip);
+    setShowItemEntry(false);
+    setShowTaxAndTip(true);
+  }
 
   return (
     <main className="bg-slate-300 h-screen flex justify-center items-center">
@@ -192,6 +310,18 @@ export default function Home() {
               splitComplete={splitComplete}
             />
           ) : null}
+          {showTaxAndTip ? (
+            <TaxOrTipAction
+              subtotal={subtotal}
+              tax={tax}
+              taxPercentage={taxPercentage}
+              tip={tip}
+              tipPercentage={tipPercentage}
+              grandTotal={grandTotal}
+              activateTipOrTax={activateTipOrTax}
+              currentActiveMod={currentActiveMod}
+            />
+          ) : null}
         </div>
         <div className="interactionScreen h-1/3 bg-primary text-white overflow-hidden flex">
           {showReceiptCount ? (
@@ -211,6 +341,12 @@ export default function Home() {
             <Keypad
               changeState={changeItemCost}
               subtractState={subtractItemCost}
+            />
+          ) : null}
+          {showTaxAndTip ? (
+            <Keypad
+              changeState={changeTaxOrTip}
+              subtractState={subtractTaxOrTip}
             />
           ) : null}
         </div>
