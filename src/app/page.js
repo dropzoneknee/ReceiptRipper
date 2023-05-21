@@ -7,6 +7,8 @@ import SubtotalAction from "@/components/SubtotalAction";
 import Keypad from "@/components/Keypad";
 import ItemEntryAction from "@/components/ItemEntryAction";
 import TaxOrTipAction from "@/components/TaxOrTipAction";
+import SplitBillActions from "@/components/SplitBillActions";
+import SplitBill from "@/components/SplitBill";
 
 export default function Home() {
   const initialReceipts = [
@@ -41,9 +43,9 @@ export default function Home() {
   const [showSubtotal, setShowSubtotal] = useState(false);
   const [showItemEntry, setShowItemEntry] = useState(false);
   const [showTaxAndTip, setShowTaxAndTip] = useState(false);
+  const [showCompleteSplitBill, setShowCompleteSplitBill] = useState(false);
   const [splitItems, setSplitItems] = useState([]);
   const [splitAmount, setSplitAmount] = useState(0);
-
   const [currentActiveMod, setCurrentActiveMod] = useState(0);
 
   function addReceipt() {
@@ -272,6 +274,7 @@ export default function Home() {
   function toItemEntryPage() {
     setShowSubtotal(false);
     setShowItemEntry(true);
+    setShowTaxAndTip(false);
     setRemainingSubtotal(subtotal);
   }
 
@@ -279,10 +282,16 @@ export default function Home() {
     setGrandTotal(subtotal + tax + tip);
     setShowItemEntry(false);
     setShowTaxAndTip(true);
+    setShowCompleteSplitBill(false);
+  }
+
+  function toCompleteSplitBill() {
+    setShowCompleteSplitBill(true);
+    setShowTaxAndTip(false);
   }
 
   return (
-    <main className="bg-slate-300 h-screen flex justify-center items-center">
+    <main className="bg-slate-300 h-screen flex justify-center items-center touch-manipulation">
       <div className="max-w-md h-screen bg-white overflow-hidden flex-col grow ">
         <div className="actionScreen h-2/3 overflow-hidden flex">
           {showReceiptCount ? (
@@ -320,6 +329,16 @@ export default function Home() {
               grandTotal={grandTotal}
               activateTipOrTax={activateTipOrTax}
               currentActiveMod={currentActiveMod}
+              toCompleteSplitBill={toCompleteSplitBill}
+              toItemEntryPage={toItemEntryPage}
+            />
+          ) : null}
+          {showCompleteSplitBill ? (
+            <SplitBillActions
+              receiptDetails={receiptDetails}
+              taxPercentage={taxPercentage}
+              tipPercentage={tipPercentage}
+              toTaxAndTip={toTaxAndTip}
             />
           ) : null}
         </div>
@@ -347,6 +366,16 @@ export default function Home() {
             <Keypad
               changeState={changeTaxOrTip}
               subtractState={subtractTaxOrTip}
+            />
+          ) : null}
+          {showCompleteSplitBill ? (
+            <SplitBill
+              tip={tip}
+              tipPercentage={tipPercentage}
+              tax={tax}
+              taxPercentage={taxPercentage}
+              subtotal={subtotal}
+              grandTotal={grandTotal}
             />
           ) : null}
         </div>
