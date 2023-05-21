@@ -5,6 +5,7 @@ import Receipts from "@/components/Receipts";
 import ReceiptsAction from "@/components/ReceiptsAction";
 import SubtotalAction from "@/components/SubtotalAction";
 import Keypad from "@/components/Keypad";
+import ItemEntryAction from "@/components/ItemEntryAction";
 
 export default function Home() {
   const initialReceipts = [
@@ -12,11 +13,15 @@ export default function Home() {
       id: 1,
       name: "receipt1",
       items: [],
+      total: 0,
+      active: false,
     },
     {
       id: 2,
       name: "receipt2",
       items: [],
+      total: 0,
+      active: false,
     },
   ];
 
@@ -34,15 +39,19 @@ export default function Home() {
   const [showReceiptCount, setShowReceiptCount] = useState(true);
   const [showSubtotal, setShowSubtotal] = useState(false);
   const [showItemEntry, setShowItemEntry] = useState(false);
+  const [splitItems, setSplitItems] = useState([]);
 
   function addReceipt() {
-    if (receiptAmount < 8) {
+    if (receiptAmount < 6) {
       setReceiptAmount(receiptAmount + 1);
       setReceiptDetails((receiptDetail) => [
         ...receiptDetail,
         {
+          id: receiptDetails.length + 1,
           name: `receipt${receiptDetails.length + 1}`,
           items: [],
+          total: 0,
+          active: false,
         },
       ]);
     }
@@ -93,6 +102,27 @@ export default function Home() {
     setItemCost(SET_AMOUNT_BACK);
   }
 
+  function splitItem(receipt) {
+    if (itemCost > 0) {
+      if (splitItems.includes(receipt)) {
+        setSplitItems((splitItems) => splitItems.filter((i) => i !== receipt));
+      } else {
+        setSplitItems((splitItems) => [...splitItems, receipt]);
+      }
+
+      const newState = receiptDetails.map((obj) => {
+        if (obj.id === receipt) {
+          return { ...obj, active: !obj.active };
+        }
+        return obj;
+      });
+
+      setReceiptDetails(newState);
+    }
+  }
+
+  function splitComplete() {}
+
   function toReceiptsPage() {
     setShowReceiptCount(true);
     setShowSubtotal(false);
@@ -124,36 +154,14 @@ export default function Home() {
             />
           ) : null}
           {showItemEntry ? (
-            <div className="flex-col grow justify-center items-center">
-              <div className="h-1/5"></div>
-              <div className="flex h-3/5 justify-center items-center grow">
-                <div className="flex-col ">
-                  <div className="flex justify-center mb-4">
-                    <h2 className="text-2xl">enter item</h2>
-                  </div>
-                  <div
-                    className={
-                      itemCost == 0
-                        ? "opacity-30 flex justify-center"
-                        : "flex justify-center"
-                    }
-                  >
-                    $<h1 className="text-6xl">{itemCost.toFixed(2)}</h1>
-                  </div>
-                </div>
-              </div>
-              <div className="h-1/5 flex items-end mr-4 ml-4">
-                <button className="text-8xl" onClick={toSubtotalPage}>
-                  ←
-                </button>
-                <div className="grow"></div>
-                {remainingSubtotal == 0 ? (
-                  <button className="text-8xl" onClick={toTaxAndTip}>
-                    →
-                  </button>
-                ) : null}
-              </div>
-            </div>
+            <ItemEntryAction
+              itemCost={itemCost}
+              remainingSubtotal={remainingSubtotal}
+              receiptDetails={receiptDetails}
+              toSubtotalPage={toSubtotalPage}
+              toTaxAndTip={toTaxAndTip}
+              splitItem={splitItem}
+            />
           ) : null}
         </div>
         <div className="interactionScreen h-1/3 bg-primary text-white overflow-hidden flex">
@@ -176,7 +184,6 @@ export default function Home() {
               subtractState={subtractItemCost}
             />
           ) : null}
-          {showItemEntry ? <div></div> : null}
         </div>
       </div>
     </main>

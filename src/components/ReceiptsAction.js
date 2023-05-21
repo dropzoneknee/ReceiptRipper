@@ -12,8 +12,8 @@ export default function ReceiptsAction(props) {
               src="/receipt.svg"
               alt="Receipt"
               className=""
-              width={100}
-              height={144}
+              width={80}
+              height={115}
               priority
             />
           </div>
