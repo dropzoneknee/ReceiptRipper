@@ -16,7 +16,7 @@ export default function ItemEntryAction(props) {
         >
           $<h1 className="text-6xl">{props.itemCost.toFixed(2)}</h1>
         </div>
-        <h3 className="">
+        <h3 className="opacity-50">
           remaining subtotal {props.remainingSubtotal.toFixed(2)}
         </h3>
       </div>
@@ -24,10 +24,9 @@ export default function ItemEntryAction(props) {
       <div className="h-6/10 grow grid grid-cols-3 justify-center items-center">
         {props.receiptDetails.map((data) => (
           <div
-            className="flex justify-center items-center flex-col "
+            className="flex justify-start items-center flex-col "
             key={data.id}
           >
-            <h1>{data.name}</h1>
             <button
               className="active:opacity-30"
               onClick={() => {
@@ -37,18 +36,22 @@ export default function ItemEntryAction(props) {
               <Image
                 src="/receipt.svg"
                 alt="Receipt"
-                className=""
-                width={80}
-                height={115}
+                className="mb-2"
+                width={64}
+                height={92}
                 priority
               />
             </button>
-            <h1>${data.total.toFixed(2)}</h1>
-            {data.active ? (
-              <h1 className="opacity-30">
-                &#40;${props.splitAmount.toFixed(2)}&#41;
-              </h1>
-            ) : null}
+            <h1 className="text-sm opacity-50">{data.name}</h1>
+            <div className="text-sm flex">
+              <h1>${data.total.toFixed(2)}</h1>
+              {data.active ? (
+                <h1 className="opacity-30">
+                  &#40;+${(props.itemCost / props.splitItems.length).toFixed(2)}
+                  &#41;
+                </h1>
+              ) : null}
+            </div>
           </div>
         ))}
       </div>

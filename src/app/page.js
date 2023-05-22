@@ -7,21 +7,19 @@ import SubtotalAction from "@/components/SubtotalAction";
 import Keypad from "@/components/Keypad";
 import ItemEntryAction from "@/components/ItemEntryAction";
 import TaxOrTipAction from "@/components/TaxOrTipAction";
-import SplitBillActions from "@/components/SplitBillActions";
-import SplitBill from "@/components/SplitBill";
 
 export default function Home() {
   const initialReceipts = [
     {
       id: 1,
-      name: "receipt1",
+      name: "receipt 1",
       items: [],
       total: 0,
       active: false,
     },
     {
       id: 2,
-      name: "receipt2",
+      name: "receipt 2",
       items: [],
       total: 0,
       active: false,
@@ -34,18 +32,16 @@ export default function Home() {
   const [receiptDetails, setReceiptDetails] = useState(initialReceipts);
   const [itemCost, setItemCost] = useState(0);
   const [tax, setTax] = useState(0);
-  const [taxPercentage, setTaxPercentage] = useState(0);
+  const [taxPercentage, setTaxPercentage] = useState(8.38);
   const [tip, setTip] = useState(0);
-  const [tipPercentage, setTipPercentage] = useState(0);
+  const [tipPercentage, setTipPercentage] = useState(20);
   const [grandTotal, setGrandTotal] = useState(0);
 
   const [showReceiptCount, setShowReceiptCount] = useState(true);
   const [showSubtotal, setShowSubtotal] = useState(false);
   const [showItemEntry, setShowItemEntry] = useState(false);
   const [showTaxAndTip, setShowTaxAndTip] = useState(false);
-  const [showCompleteSplitBill, setShowCompleteSplitBill] = useState(false);
   const [splitItems, setSplitItems] = useState([]);
-  const [splitAmount, setSplitAmount] = useState(0);
   const [currentActiveMod, setCurrentActiveMod] = useState(0);
 
   function addReceipt() {
@@ -55,7 +51,7 @@ export default function Home() {
         ...receiptDetail,
         {
           id: receiptDetails.length + 1,
-          name: `receipt${receiptDetails.length + 1}`,
+          name: `receipt ${receiptDetails.length + 1}`,
           items: [],
           total: 0,
           active: false,
@@ -68,9 +64,7 @@ export default function Home() {
     if (receiptAmount > 2) {
       setReceiptAmount(receiptAmount - 1);
       setReceiptDetails((receiptDetails) =>
-        receiptDetails.filter(
-          (receipt) => receipt.name !== `receipt${receiptDetails.length}`
-        )
+        receiptDetails.filter((receipt) => receipt.id !== receiptDetails.length)
       );
     }
   }
@@ -113,10 +107,8 @@ export default function Home() {
     if (itemCost > 0) {
       if (splitItems.includes(receipt)) {
         setSplitItems((splitItems) => splitItems.filter((i) => i !== receipt));
-        changeSplitAmount(-1);
       } else {
         setSplitItems((splitItems) => [...splitItems, receipt]);
-        changeSplitAmount(1);
       }
 
       const newState = receiptDetails.map((obj) => {
@@ -137,23 +129,18 @@ export default function Home() {
           return {
             ...receipt,
             active: false,
-            total: receipt.total + splitAmount,
-            items: [...receipt.items, splitAmount],
+            total: receipt.total + itemCost / splitItems.length,
+            items: [...receipt.items, itemCost / splitItems.length],
           };
         }
         return receipt;
       });
 
       setItemCost(0);
-      setSplitAmount(0);
       setSplitItems([]);
       setReceiptDetails(newReceiptDetails);
       setRemainingSubtotal(remainingSubtotal - itemCost);
     }
-  }
-
-  function changeSplitAmount(opr) {
-    setSplitAmount(itemCost / (splitItems.length + parseInt(opr)));
   }
 
   function changeTaxOrTip(keypadNum) {
@@ -282,17 +269,11 @@ export default function Home() {
     setGrandTotal(subtotal + tax + tip);
     setShowItemEntry(false);
     setShowTaxAndTip(true);
-    setShowCompleteSplitBill(false);
-  }
-
-  function toCompleteSplitBill() {
-    setShowCompleteSplitBill(true);
-    setShowTaxAndTip(false);
   }
 
   return (
-    <main className=" h-screen flex justify-center items-center touch-manipulation">
-      <div className="max-w-md h-full bg-white overflow-hidden flex-col grow ">
+    <main className="h-full flex touch-manipulation grow justify-center">
+      <div className="max-w-md bg-white overflow-hidden flex flex-col grow ">
         <div className="actionScreen h-2/3 overflow-hidden flex">
           {showReceiptCount ? (
             <ReceiptsAction
@@ -315,7 +296,7 @@ export default function Home() {
               toSubtotalPage={toSubtotalPage}
               toTaxAndTip={toTaxAndTip}
               splitItem={splitItem}
-              splitAmount={splitAmount}
+              splitItems={splitItems}
               splitComplete={splitComplete}
             />
           ) : null}
@@ -329,16 +310,8 @@ export default function Home() {
               grandTotal={grandTotal}
               activateTipOrTax={activateTipOrTax}
               currentActiveMod={currentActiveMod}
-              toCompleteSplitBill={toCompleteSplitBill}
               toItemEntryPage={toItemEntryPage}
-            />
-          ) : null}
-          {showCompleteSplitBill ? (
-            <SplitBillActions
               receiptDetails={receiptDetails}
-              taxPercentage={taxPercentage}
-              tipPercentage={tipPercentage}
-              toTaxAndTip={toTaxAndTip}
             />
           ) : null}
         </div>
@@ -366,16 +339,6 @@ export default function Home() {
             <Keypad
               changeState={changeTaxOrTip}
               subtractState={subtractTaxOrTip}
-            />
-          ) : null}
-          {showCompleteSplitBill ? (
-            <SplitBill
-              tip={tip}
-              tipPercentage={tipPercentage}
-              tax={tax}
-              taxPercentage={taxPercentage}
-              subtotal={subtotal}
-              grandTotal={grandTotal}
             />
           ) : null}
         </div>

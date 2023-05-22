@@ -1,76 +1,76 @@
 export default function Keypad(props) {
+  const keypadStyles =
+    "text-2xl w-24 h-14 flex items-center justify-center drop-shadow-md";
+
   return (
     <div className="flex justify-center grow items-center">
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 gap-0.5">
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(1)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">1</div>
+          <div className={keypadStyles}>1</div>
         </button>
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(2)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">2</div>
+          <div className={keypadStyles}>2</div>
         </button>
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(3)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">3</div>
+          <div className={keypadStyles}>3</div>
         </button>
 
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(4)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">4</div>
+          <div className={keypadStyles}>4</div>
         </button>
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(5)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">5</div>
+          <div className={keypadStyles}>5</div>
         </button>
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(6)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">6</div>
+          <div className={keypadStyles}>6</div>
         </button>
 
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(7)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">7</div>
+          <div className={keypadStyles}>7</div>
         </button>
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(8)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">8</div>
+          <div className={keypadStyles}>8</div>
         </button>
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(9)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">9</div>
+          <div className={keypadStyles}>9</div>
         </button>
-        <div className="w-20 h-14"></div>
+        <div className={keypadStyles}></div>
 
         <button
-          className="text-4xl active:opacity-30"
+          className="active:opacity-30"
           onClick={() => props.changeState(0)}
         >
-          <div className="w-20 h-14 flex items-center justify-center">0</div>
+          <div className={keypadStyles}>0</div>
         </button>
-        <button
-          className="text-3xl active:opacity-30"
-          onClick={props.subtractState}
-        >
-          <div className="w-20 h-14 flex items-center justify-center">⌫</div>
+        <button className="active:opacity-30" onClick={props.subtractState}>
+          <div className={keypadStyles}>⌫</div>
         </button>
       </div>
     </div>
