@@ -66,7 +66,7 @@ export default function ItemEntryAction(props) {
         </div>
         <div className="w-1/5 flex justify-end">
           {props.remainingSubtotal === 0 ? (
-            <button className="text-8xl" onClick={props.toTaxAndTip}>
+            <button className="text-8xl" onClick={props.toSplitBill}>
               →
             </button>
           ) : null}

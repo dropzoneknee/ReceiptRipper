@@ -6,7 +6,7 @@ import ReceiptsAction from "@/components/ReceiptsAction";
 import SubtotalAction from "@/components/SubtotalAction";
 import Keypad from "@/components/Keypad";
 import ItemEntryAction from "@/components/ItemEntryAction";
-import TaxOrTipAction from "@/components/TaxOrTipAction";
+import SplitBillAction from "@/components/SplitBillAction";
 
 export default function Home() {
   const initialReceipts = [
@@ -35,12 +35,11 @@ export default function Home() {
   const [taxPercentage, setTaxPercentage] = useState(8.38);
   const [tip, setTip] = useState(0);
   const [tipPercentage, setTipPercentage] = useState(20);
-  const [grandTotal, setGrandTotal] = useState(0);
 
   const [showReceiptCount, setShowReceiptCount] = useState(true);
   const [showSubtotal, setShowSubtotal] = useState(false);
   const [showItemEntry, setShowItemEntry] = useState(false);
-  const [showTaxAndTip, setShowTaxAndTip] = useState(false);
+  const [showSplitBill, setShowSplitBill] = useState(false);
   const [splitItems, setSplitItems] = useState([]);
   const [currentActiveMod, setCurrentActiveMod] = useState(0);
 
@@ -152,7 +151,6 @@ export default function Home() {
         if (ADD_NUM_AND_MOVE_DECIMAL < subtotal) {
           setTax(ADD_NUM_AND_MOVE_DECIMAL);
           setTaxPercentage((ADD_NUM_AND_MOVE_DECIMAL / subtotal) * 100);
-          setGrandTotal(subtotal + ADD_NUM_AND_MOVE_DECIMAL + tip);
         }
         break;
 
@@ -162,9 +160,6 @@ export default function Home() {
         if (ADD_NUM_AND_MOVE_DECIMAL < 100) {
           setTaxPercentage(ADD_NUM_AND_MOVE_DECIMAL);
           setTax((ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100);
-          setGrandTotal(
-            subtotal + (ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100 + tip
-          );
         }
         break;
 
@@ -174,7 +169,6 @@ export default function Home() {
         if (ADD_NUM_AND_MOVE_DECIMAL < subtotal) {
           setTip(ADD_NUM_AND_MOVE_DECIMAL);
           setTipPercentage((ADD_NUM_AND_MOVE_DECIMAL / subtotal) * 100);
-          setGrandTotal(subtotal + ADD_NUM_AND_MOVE_DECIMAL + tax);
         }
         break;
 
@@ -184,9 +178,6 @@ export default function Home() {
         if (ADD_NUM_AND_MOVE_DECIMAL < 100) {
           setTipPercentage(ADD_NUM_AND_MOVE_DECIMAL);
           setTip((ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100);
-          setGrandTotal(
-            subtotal + (ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100 + tax
-          );
         }
         break;
     }
@@ -202,7 +193,6 @@ export default function Home() {
         SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
         setTax(SET_AMOUNT_BACK);
         setTaxPercentage((SET_AMOUNT_BACK / subtotal) * 100);
-        setGrandTotal(subtotal + SET_AMOUNT_BACK + tip);
         break;
 
       case 2:
@@ -210,7 +200,6 @@ export default function Home() {
         SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
         setTaxPercentage(SET_AMOUNT_BACK);
         setTax((SET_AMOUNT_BACK * subtotal) / 100);
-        setGrandTotal(subtotal + (SET_AMOUNT_BACK * subtotal) / 100 + tip);
 
         break;
 
@@ -219,7 +208,6 @@ export default function Home() {
         SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
         setTip(SET_AMOUNT_BACK);
         setTipPercentage((SET_AMOUNT_BACK / subtotal) * 100);
-        setGrandTotal(subtotal + SET_AMOUNT_BACK + tax);
 
         break;
 
@@ -228,7 +216,6 @@ export default function Home() {
         SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
         setTipPercentage(SET_AMOUNT_BACK);
         setTip((SET_AMOUNT_BACK * subtotal) / 100);
-        setGrandTotal(subtotal + (SET_AMOUNT_BACK * subtotal) / 100 + tax);
 
         break;
     }
@@ -241,14 +228,12 @@ export default function Home() {
       case 2:
         setTax(0);
         setTaxPercentage(0);
-        setGrandTotal(subtotal + tip);
         break;
 
       case 3:
       case 4:
         setTip(0);
         setTipPercentage(0);
-        setGrandTotal(subtotal + tax);
         break;
     }
   }
@@ -261,14 +246,13 @@ export default function Home() {
   function toItemEntryPage() {
     setShowSubtotal(false);
     setShowItemEntry(true);
-    setShowTaxAndTip(false);
+    setShowSplitBill(false);
     setRemainingSubtotal(subtotal);
   }
 
-  function toTaxAndTip() {
-    setGrandTotal(subtotal + tax + tip);
+  function toSplitBill() {
     setShowItemEntry(false);
-    setShowTaxAndTip(true);
+    setShowSplitBill(true);
   }
 
   return (
@@ -294,20 +278,17 @@ export default function Home() {
               remainingSubtotal={remainingSubtotal}
               receiptDetails={receiptDetails}
               toSubtotalPage={toSubtotalPage}
-              toTaxAndTip={toTaxAndTip}
+              toSplitBill={toSplitBill}
               splitItem={splitItem}
               splitItems={splitItems}
               splitComplete={splitComplete}
             />
           ) : null}
-          {showTaxAndTip ? (
-            <TaxOrTipAction
+          {showSplitBill ? (
+            <SplitBillAction
               subtotal={subtotal}
-              tax={tax}
               taxPercentage={taxPercentage}
-              tip={tip}
               tipPercentage={tipPercentage}
-              grandTotal={grandTotal}
               activateTipOrTax={activateTipOrTax}
               currentActiveMod={currentActiveMod}
               toItemEntryPage={toItemEntryPage}
@@ -335,7 +316,7 @@ export default function Home() {
               subtractState={subtractItemCost}
             />
           ) : null}
-          {showTaxAndTip ? (
+          {showSplitBill ? (
             <Keypad
               changeState={changeTaxOrTip}
               subtractState={subtractTaxOrTip}

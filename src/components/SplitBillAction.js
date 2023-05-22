@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function TaxOrTipAction(props) {
+export default function SplitBillAction(props) {
   return (
     <div className="flex-col flex grow">
       <div className="h-1/10 flex items-end mr-4 ml-4">
@@ -102,7 +102,14 @@ export default function TaxOrTipAction(props) {
         <div className=" flex justify-center items-center">
           <h2 className="text-xl opacity-50">grand total</h2>
           <div className="flex justify-center ml-5">
-            $<h1 className="text-2xl">{props.grandTotal.toFixed(2)}</h1>
+            $
+            <h1 className="text-2xl">
+              {(
+                (props.taxPercentage / 100) * props.subtotal +
+                (props.tipPercentage / 100) * props.subtotal +
+                props.subtotal
+              ).toFixed(2)}
+            </h1>
           </div>
         </div>
       </div>
