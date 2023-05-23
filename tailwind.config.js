@@ -28,6 +28,18 @@ module.exports = {
         "8/10": "80%",
         "9/10": "90%",
       },
+
+      spacing: {
+        mega: "200rem",
+      },
+
+      minWidth: {
+        scroll: "6rem",
+      },
+
+      boxShadow: {
+        blur: "0 0 5px 10px white",
+      },
     },
   },
   plugins: [],

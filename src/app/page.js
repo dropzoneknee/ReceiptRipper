@@ -247,12 +247,20 @@ export default function Home() {
     setShowSubtotal(false);
     setShowItemEntry(true);
     setShowSplitBill(false);
-    setRemainingSubtotal(subtotal);
+    setRemainingSubtotal(subtotal - sumOfItemsEntered());
   }
 
   function toSplitBill() {
     setShowItemEntry(false);
     setShowSplitBill(true);
+  }
+
+  function sumOfItemsEntered() {
+    return receiptDetails
+      .map((num) => num.total)
+      .reduce(function (a, b) {
+        return a + b;
+      });
   }
 
   return (
@@ -276,6 +284,7 @@ export default function Home() {
             <ItemEntryAction
               itemCost={itemCost}
               remainingSubtotal={remainingSubtotal}
+              sumOfItemsEntered={sumOfItemsEntered}
               receiptDetails={receiptDetails}
               toSubtotalPage={toSubtotalPage}
               toSplitBill={toSplitBill}
@@ -296,12 +305,13 @@ export default function Home() {
             />
           ) : null}
         </div>
-        <div className="interactionScreen h-1/3 bg-primary text-white overflow-hidden flex">
+        <div className="interactionScreen h-1/3 bg-indigo-600 text-white overflow-hidden flex">
           {showReceiptCount ? (
             <Receipts
               receiptAmount={receiptAmount}
               addReceipt={addReceipt}
               subtractReceipt={subtractReceipt}
+              toSubtotalPage={toSubtotalPage}
             />
           ) : null}
           {showSubtotal ? (

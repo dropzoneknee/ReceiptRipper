@@ -1,7 +1,8 @@
 export default function Receipts(props) {
   return (
     <div className="howMany flex justify-center items-center grow ">
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center items-center">
+        <h2 className="text-2xl mb-4">how many?</h2>
         <div className="flex justify-center">
           <h1 className="text-8xl">{props.receiptAmount}</h1>
           <div className="flex flex-col ml-7">
@@ -19,7 +20,6 @@ export default function Receipts(props) {
             </button>
           </div>
         </div>
-        <h2 className="text-2xl">how many?</h2>
       </div>
     </div>
   );

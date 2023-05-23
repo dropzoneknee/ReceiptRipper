@@ -1,16 +1,23 @@
 import Image from "next/image";
+import { MdKeyboardArrowLeft, MdRefresh } from "react-icons/md";
 
 export default function SplitBillAction(props) {
   return (
     <div className="flex-col flex grow">
-      <div className="h-1/10 flex items-end mr-4 ml-4">
+      <div className="h-1/10 flex items-end mr-1 ml-1">
         <button
-          className="text-8xl active:opacity-30"
+          className="text-6xl active:opacity-100 opacity-50"
           onClick={props.toItemEntryPage}
         >
-          ←
+          <MdKeyboardArrowLeft />
         </button>
         <div className="grow"></div>
+        <button
+          className="mt-2 text-5xl active:opacity-100 opacity-50"
+          onClick={() => location.reload()}
+        >
+          <MdRefresh />
+        </button>
       </div>
 
       <div className="h-8/10 grow grid grid-cols-3 items-center justify-center">
