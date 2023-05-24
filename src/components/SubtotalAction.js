@@ -5,7 +5,7 @@ export default function SubtotalAction(props) {
     <div className="flex-col grow justify-center items-center">
       <div className="flex h-1/5 items-start mr-1 ml-1">
         <button
-          className="text-6xl active:opacity-100 opacity-50"
+          className="text-5xl active:opacity-100 opacity-50"
           onClick={props.toReceiptsPage}
         >
           <MdKeyboardArrowLeft />

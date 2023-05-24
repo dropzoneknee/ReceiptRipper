@@ -2,29 +2,33 @@ import Image from "next/image";
 import { MdKeyboardArrowRight, MdRefresh } from "react-icons/md";
 
 export default function ReceiptsAction(props) {
+  const submit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="flex-col flex grow ">
-      <div className="flex h-1/6 items-start mr-1 ml-1">
+      <div className="flex h-1/6 items-start mr-1 ml-3">
         <button
-          className="mt-2 text-5xl active:opacity-100 opacity-50"
+          className="mt-2 text-4xl active:opacity-100 opacity-50"
           onClick={() => location.reload()}
         >
           <MdRefresh />
         </button>
         <div className="grow"></div>
         <button
-          className="text-6xl active:opacity-100 opacity-50"
+          className="text-5xl active:opacity-100 opacity-50"
           onClick={props.toSubtotalPage}
         >
           <MdKeyboardArrowRight />
         </button>
       </div>
       <div className="h-4/6 flex items-center justify-center grow">
-        <div className="grid grid-cols-3 gap-8">
-          {props.receiptDetails.map((data) => (
+        <form className="grid grid-cols-3 gap-8" onSubmit={submit}>
+          {props.receiptDetails.map((data, index) => (
             <div
               className="flex flex-col items-center justify-center text-sm"
-              key={data.name}
+              key={index}
             >
               <Image
                 src="/receipt.svg"
@@ -34,10 +38,17 @@ export default function ReceiptsAction(props) {
                 height={92}
                 priority
               />
-              <h1 className="opacity-50">{data.name}</h1>
+
+              <input
+                name="name"
+                placeholder={data.name}
+                value={data.name}
+                className="w-20 text-center"
+                onChange={(event) => props.handleInputChange(index, event)}
+              />
             </div>
           ))}
-        </div>
+        </form>
       </div>
       <div className="h-1/6 flex justify-center items-end">
         <button

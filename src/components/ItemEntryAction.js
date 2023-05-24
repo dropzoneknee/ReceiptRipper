@@ -5,9 +5,9 @@ export default function ItemEntryAction(props) {
   return (
     <div className="flex-col grow justify-center items-center overflow-hidden">
       <div className="flex h-3/10 grow justify-center">
-        <div className="flex items-start ml-1 w-1/6">
+        <div className="flex items-start ml-1">
           <button
-            className="text-6xl active:opacity-100 opacity-50"
+            className="text-5xl active:opacity-100 opacity-50"
             onClick={props.toSubtotalPage}
           >
             <MdKeyboardArrowLeft />
@@ -30,16 +30,16 @@ export default function ItemEntryAction(props) {
             remaining subtotal {props.remainingSubtotal.toFixed(2)}
           </h3>
         </div>
-        <div className="w-1/6 mr-1">
+        <div className="items-end mr-1">
           {props.remainingSubtotal === 0 ? (
             <button
-              className="text-6xl active:opacity-100 opacity-50"
+              className="text-5xl active:opacity-100 opacity-50"
               onClick={props.toSplitBill}
             >
               <MdKeyboardArrowRight />
             </button>
           ) : (
-            <button className="text-6xl opacity-10 cursor-not-allowed">
+            <button className="text-5xl opacity-10 cursor-not-allowed">
               <MdKeyboardArrowRight />
             </button>
           )}
@@ -97,7 +97,7 @@ export default function ItemEntryAction(props) {
           >
             add item
           </button>
-          {props.remainingSubtotal === 0 ? (
+          {props.remainingSubtotal <= 0 ? (
             <button
               className="bg-indigo-500 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-indigo-700"
               onClick={props.toSplitBill}

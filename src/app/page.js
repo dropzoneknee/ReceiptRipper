@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Receipts from "@/components/Receipts";
 import ReceiptsAction from "@/components/ReceiptsAction";
@@ -123,13 +122,15 @@ export default function Home() {
 
   function splitComplete() {
     if (splitItems.length > 0) {
+      const splitAmount = itemCost / splitItems.length;
+      console.log(splitAmount);
       const newReceiptDetails = receiptDetails.map((receipt) => {
         if (splitItems.includes(receipt.id)) {
           return {
             ...receipt,
             active: false,
-            total: receipt.total + itemCost / splitItems.length,
-            items: [...receipt.items, itemCost / splitItems.length],
+            total: receipt.total + splitAmount,
+            items: [...receipt.items, splitAmount],
           };
         }
         return receipt;
@@ -138,7 +139,10 @@ export default function Home() {
       setItemCost(0);
       setSplitItems([]);
       setReceiptDetails(newReceiptDetails);
-      setRemainingSubtotal(remainingSubtotal - itemCost);
+      setRemainingSubtotal(
+        Math.round((remainingSubtotal - itemCost) * 100) / 100
+      );
+      console.log(evenSplit());
     }
   }
 
@@ -263,14 +267,31 @@ export default function Home() {
       });
   }
 
+  function handleInputChange(index, event) {
+    const newReceiptDetails = [...receiptDetails];
+    newReceiptDetails[index][event.target.name] = event.target.value;
+
+    console.log(newReceiptDetails);
+    setReceiptDetails(newReceiptDetails);
+  }
+
+  function evenSplit() {
+    return (
+      (Math.floor((itemCost / splitItems.length) * 100) / 100) *
+        splitItems.length ===
+      itemCost
+    );
+  }
+
   return (
     <main className="h-full flex touch-manipulation grow justify-center">
       <div className="max-w-md bg-white overflow-hidden flex flex-col grow ">
         <div className="actionScreen h-2/3 overflow-hidden flex">
           {showReceiptCount ? (
             <ReceiptsAction
-              toSubtotalPage={toSubtotalPage}
               receiptDetails={receiptDetails}
+              toSubtotalPage={toSubtotalPage}
+              handleInputChange={handleInputChange}
             />
           ) : null}
           {showSubtotal ? (
