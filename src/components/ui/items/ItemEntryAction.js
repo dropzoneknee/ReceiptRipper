@@ -4,7 +4,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 export default function ItemEntryAction(props) {
   return (
     <div className="flex-col grow justify-center items-center overflow-hidden">
-      <div className="flex h-3/10 grow justify-center">
+      <div className="flex h-1/10 grow justify-center">
         <div className="flex items-start ml-1">
           <button
             className="text-5xl active:opacity-100 opacity-50"
@@ -13,25 +13,9 @@ export default function ItemEntryAction(props) {
             <MdKeyboardArrowLeft />
           </button>
         </div>
-        <div className="flex-col flex grow w-2/3 justify-center items-center ">
-          <div className="flex justify-center mb-1">
-            <h2 className="text-2xl">enter item</h2>
-          </div>
-          <div
-            className={
-              props.itemCost == 0
-                ? "opacity-30 flex justify-center mb-1"
-                : "flex justify-center mb-1"
-            }
-          >
-            $<h1 className="text-6xl">{props.itemCost.toFixed(2)}</h1>
-          </div>
-          <h3 className="opacity-50">
-            remaining subtotal {props.remainingSubtotal.toFixed(2)}
-          </h3>
-        </div>
+        <div className="grow"></div>
         <div className="items-end mr-1">
-          {props.remainingSubtotal === 0 ? (
+          {props.remainingSubtotal <= 0 ? (
             <button
               className="text-5xl active:opacity-100 opacity-50"
               onClick={props.toSplitBill}
@@ -45,8 +29,25 @@ export default function ItemEntryAction(props) {
           )}
         </div>
       </div>
+      <div className="h-2/10 flex-col flex grow justify-center items-center ">
+        <div className="flex justify-center mb-1">
+          <h2 className="text-2xl">enter item</h2>
+        </div>
+        <div
+          className={
+            props.itemCost == 0
+              ? "opacity-30 flex justify-center mb-1"
+              : "flex justify-center mb-1"
+          }
+        >
+          $<h1 className="text-6xl">{props.itemCost.toFixed(2)}</h1>
+        </div>
+        <h3 className="opacity-50">
+          remaining subtotal {props.remainingSubtotal.toFixed(2)}
+        </h3>
+      </div>
 
-      <div className="h-5/10 overflow-x-scroll flex items-center">
+      <div className="h-6/10 overflow-x-scroll flex items-center">
         <div
           className={
             props.receiptDetails.length < 4
@@ -89,7 +90,7 @@ export default function ItemEntryAction(props) {
           ))}
         </div>
       </div>
-      <div className="h-2/10 flex justify-center items-end grow ">
+      <div className="h-1/10 flex justify-center items-end grow ">
         <div className="grow flex justify-center space-x-2">
           <button
             className="bg-indigo-500 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-indigo-700"

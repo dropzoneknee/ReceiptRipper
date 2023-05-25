@@ -1,11 +1,9 @@
 "use client";
 import { useState } from "react";
-import Receipts from "@/components/Receipts";
-import ReceiptsAction from "@/components/ReceiptsAction";
-import SubtotalAction from "@/components/SubtotalAction";
-import Keypad from "@/components/Keypad";
-import ItemEntryAction from "@/components/ItemEntryAction";
-import SplitBillAction from "@/components/SplitBillAction";
+import Items from "@/components/ui/items/Items";
+import Receipts from "@/components/ui/receipts/Receipts";
+import Result from "@/components/ui/results/Result";
+import Subtotal from "@/components/ui/subtotal/Subtotal";
 
 export default function Home() {
   const initialReceipts = [
@@ -30,20 +28,15 @@ export default function Home() {
   const [remainingSubtotal, setRemainingSubtotal] = useState(0);
   const [receiptDetails, setReceiptDetails] = useState(initialReceipts);
   const [itemCost, setItemCost] = useState(0);
-  const [tax, setTax] = useState(0);
-  const [taxPercentage, setTaxPercentage] = useState(8.38);
-  const [tip, setTip] = useState(0);
-  const [tipPercentage, setTipPercentage] = useState(20);
 
   const [showReceiptCount, setShowReceiptCount] = useState(true);
   const [showSubtotal, setShowSubtotal] = useState(false);
   const [showItemEntry, setShowItemEntry] = useState(false);
-  const [showSplitBill, setShowSplitBill] = useState(false);
+  const [showResultsScreen, setShowResultsScreen] = useState(false);
   const [splitItems, setSplitItems] = useState([]);
-  const [currentActiveMod, setCurrentActiveMod] = useState(0);
 
   function addReceipt() {
-    if (receiptAmount < 6) {
+    if (receiptAmount < 9) {
       setReceiptAmount(receiptAmount + 1);
       setReceiptDetails((receiptDetail) => [
         ...receiptDetail,
@@ -146,102 +139,6 @@ export default function Home() {
     }
   }
 
-  function changeTaxOrTip(keypadNum) {
-    let MOVE_DECIMAL, ADD_NUM_AND_MOVE_DECIMAL;
-    switch (currentActiveMod) {
-      case 1:
-        MOVE_DECIMAL = Math.round(tax * 100) * 10;
-        ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
-        if (ADD_NUM_AND_MOVE_DECIMAL < subtotal) {
-          setTax(ADD_NUM_AND_MOVE_DECIMAL);
-          setTaxPercentage((ADD_NUM_AND_MOVE_DECIMAL / subtotal) * 100);
-        }
-        break;
-
-      case 2:
-        MOVE_DECIMAL = Math.round(taxPercentage * 100) * 10;
-        ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
-        if (ADD_NUM_AND_MOVE_DECIMAL < 100) {
-          setTaxPercentage(ADD_NUM_AND_MOVE_DECIMAL);
-          setTax((ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100);
-        }
-        break;
-
-      case 3:
-        MOVE_DECIMAL = Math.round(tip * 100) * 10;
-        ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
-        if (ADD_NUM_AND_MOVE_DECIMAL < subtotal) {
-          setTip(ADD_NUM_AND_MOVE_DECIMAL);
-          setTipPercentage((ADD_NUM_AND_MOVE_DECIMAL / subtotal) * 100);
-        }
-        break;
-
-      case 4:
-        MOVE_DECIMAL = Math.round(tipPercentage * 100) * 10;
-        ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
-        if (ADD_NUM_AND_MOVE_DECIMAL < 100) {
-          setTipPercentage(ADD_NUM_AND_MOVE_DECIMAL);
-          setTip((ADD_NUM_AND_MOVE_DECIMAL * subtotal) / 100);
-        }
-        break;
-    }
-  }
-
-  function subtractTaxOrTip() {
-    let SET_AMOUNT_TO_DECIMAL_THEN_ROUND;
-    let SET_AMOUNT_BACK;
-
-    switch (currentActiveMod) {
-      case 1:
-        SET_AMOUNT_TO_DECIMAL_THEN_ROUND = Math.floor(tax * 10);
-        SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
-        setTax(SET_AMOUNT_BACK);
-        setTaxPercentage((SET_AMOUNT_BACK / subtotal) * 100);
-        break;
-
-      case 2:
-        SET_AMOUNT_TO_DECIMAL_THEN_ROUND = Math.floor(taxPercentage * 10);
-        SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
-        setTaxPercentage(SET_AMOUNT_BACK);
-        setTax((SET_AMOUNT_BACK * subtotal) / 100);
-
-        break;
-
-      case 3:
-        SET_AMOUNT_TO_DECIMAL_THEN_ROUND = Math.floor(tip * 10);
-        SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
-        setTip(SET_AMOUNT_BACK);
-        setTipPercentage((SET_AMOUNT_BACK / subtotal) * 100);
-
-        break;
-
-      case 4:
-        SET_AMOUNT_TO_DECIMAL_THEN_ROUND = Math.floor(tipPercentage * 10);
-        SET_AMOUNT_BACK = SET_AMOUNT_TO_DECIMAL_THEN_ROUND / 100;
-        setTipPercentage(SET_AMOUNT_BACK);
-        setTip((SET_AMOUNT_BACK * subtotal) / 100);
-
-        break;
-    }
-  }
-
-  function activateTipOrTax(num) {
-    setCurrentActiveMod(num);
-    switch (num) {
-      case 1:
-      case 2:
-        setTax(0);
-        setTaxPercentage(0);
-        break;
-
-      case 3:
-      case 4:
-        setTip(0);
-        setTipPercentage(0);
-        break;
-    }
-  }
-
   function toReceiptsPage() {
     setShowReceiptCount(true);
     setShowSubtotal(false);
@@ -250,13 +147,13 @@ export default function Home() {
   function toItemEntryPage() {
     setShowSubtotal(false);
     setShowItemEntry(true);
-    setShowSplitBill(false);
+    setShowResultsScreen(false);
     setRemainingSubtotal(subtotal - sumOfItemsEntered());
   }
 
   function toSplitBill() {
     setShowItemEntry(false);
-    setShowSplitBill(true);
+    setShowResultsScreen(true);
   }
 
   function sumOfItemsEntered() {
@@ -271,7 +168,6 @@ export default function Home() {
     const newReceiptDetails = [...receiptDetails];
     newReceiptDetails[index][event.target.name] = event.target.value;
 
-    console.log(newReceiptDetails);
     setReceiptDetails(newReceiptDetails);
   }
 
@@ -284,77 +180,48 @@ export default function Home() {
   }
 
   return (
-    <main className="h-full flex touch-manipulation grow justify-center">
-      <div className="max-w-md bg-white overflow-hidden flex flex-col grow ">
-        <div className="actionScreen h-2/3 overflow-hidden flex">
-          {showReceiptCount ? (
-            <ReceiptsAction
-              receiptDetails={receiptDetails}
-              toSubtotalPage={toSubtotalPage}
-              handleInputChange={handleInputChange}
-            />
-          ) : null}
-          {showSubtotal ? (
-            <SubtotalAction
-              toReceiptsPage={toReceiptsPage}
-              toItemEntryPage={toItemEntryPage}
-              subtotal={subtotal}
-            />
-          ) : null}
-          {showItemEntry ? (
-            <ItemEntryAction
-              itemCost={itemCost}
-              remainingSubtotal={remainingSubtotal}
-              sumOfItemsEntered={sumOfItemsEntered}
-              receiptDetails={receiptDetails}
-              toSubtotalPage={toSubtotalPage}
-              toSplitBill={toSplitBill}
-              splitItem={splitItem}
-              splitItems={splitItems}
-              splitComplete={splitComplete}
-            />
-          ) : null}
-          {showSplitBill ? (
-            <SplitBillAction
-              subtotal={subtotal}
-              taxPercentage={taxPercentage}
-              tipPercentage={tipPercentage}
-              activateTipOrTax={activateTipOrTax}
-              currentActiveMod={currentActiveMod}
-              toItemEntryPage={toItemEntryPage}
-              receiptDetails={receiptDetails}
-            />
-          ) : null}
-        </div>
-        <div className="interactionScreen h-1/3 bg-indigo-600 text-white overflow-hidden flex">
-          {showReceiptCount ? (
-            <Receipts
-              receiptAmount={receiptAmount}
-              addReceipt={addReceipt}
-              subtractReceipt={subtractReceipt}
-              toSubtotalPage={toSubtotalPage}
-            />
-          ) : null}
-          {showSubtotal ? (
-            <Keypad
-              changeState={changeSubtotal}
-              subtractState={subtractSubtotal}
-            />
-          ) : null}
-          {showItemEntry ? (
-            <Keypad
-              changeState={changeItemCost}
-              subtractState={subtractItemCost}
-            />
-          ) : null}
-          {showSplitBill ? (
-            <Keypad
-              changeState={changeTaxOrTip}
-              subtractState={subtractTaxOrTip}
-            />
-          ) : null}
-        </div>
-      </div>
+    <main className="h-full touch-manipulation">
+      {showReceiptCount ? (
+        <Receipts
+          receiptDetails={receiptDetails}
+          toSubtotalPage={toSubtotalPage}
+          handleInputChange={handleInputChange}
+          receiptAmount={receiptAmount}
+          addReceipt={addReceipt}
+          subtractReceipt={subtractReceipt}
+        />
+      ) : null}
+      {showSubtotal ? (
+        <Subtotal
+          toReceiptsPage={toReceiptsPage}
+          toItemEntryPage={toItemEntryPage}
+          subtotal={subtotal}
+          changeState={changeSubtotal}
+          subtractState={subtractSubtotal}
+        />
+      ) : null}
+      {showItemEntry ? (
+        <Items
+          itemCost={itemCost}
+          remainingSubtotal={remainingSubtotal}
+          sumOfItemsEntered={sumOfItemsEntered}
+          receiptDetails={receiptDetails}
+          toSubtotalPage={toSubtotalPage}
+          toSplitBill={toSplitBill}
+          splitItem={splitItem}
+          splitItems={splitItems}
+          splitComplete={splitComplete}
+          changeState={changeItemCost}
+          subtractState={subtractItemCost}
+        />
+      ) : null}
+      {showResultsScreen ? (
+        <Result
+          subtotal={subtotal}
+          toItemEntryPage={toItemEntryPage}
+          receiptDetails={receiptDetails}
+        />
+      ) : null}
     </main>
   );
 }

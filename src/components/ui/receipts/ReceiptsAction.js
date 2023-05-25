@@ -24,7 +24,11 @@ export default function ReceiptsAction(props) {
         </button>
       </div>
       <div className="h-4/6 flex items-center justify-center grow">
-        <form className="grid grid-cols-3 gap-8" onSubmit={submit}>
+        <form
+          autoComplete="off"
+          className="grid grid-cols-3 gap-8"
+          onSubmit={submit}
+        >
           {props.receiptDetails.map((data, index) => (
             <div
               className="flex flex-col items-center justify-center text-sm"
@@ -41,9 +45,14 @@ export default function ReceiptsAction(props) {
 
               <input
                 name="name"
-                placeholder={data.name}
+                placeholder="Enter Name"
                 value={data.name}
                 className="w-20 text-center"
+                autoComplete="off"
+                maxLength="10"
+                onClick={(event) =>
+                  event.target.setSelectionRange(0, event.target.value.length)
+                }
                 onChange={(event) => props.handleInputChange(index, event)}
               />
             </div>

@@ -1,8 +1,8 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Fira_Mono } from "next/font/google";
 import Head from "next/head";
 
-const inter = Inter({ subsets: ["latin"] });
+const fira = Fira_Mono({ subsets: ["latin"], weight: "500" });
 
 export const metadata = {
   title: "Receipt Ripper",
@@ -95,7 +95,7 @@ export default function RootLayout({ children }) {
           content="https://yourdomain.com/icons/apple-touch-icon.png"
         />
       </Head>
-      <body className="h-full">{children}</body>
+      <body className={fira.className}>{children}</body>
     </html>
   );
 }
