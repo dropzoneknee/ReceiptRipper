@@ -10,14 +10,14 @@ export default function Home() {
     {
       id: 1,
       name: "receipt 1",
-      items: [],
+      itemsId: [],
       total: 0,
       active: false,
     },
     {
       id: 2,
       name: "receipt 2",
-      items: [],
+      itemsId: [],
       total: 0,
       active: false,
     },
@@ -34,6 +34,7 @@ export default function Home() {
   const [showItemEntry, setShowItemEntry] = useState(false);
   const [showResultsScreen, setShowResultsScreen] = useState(false);
   const [splitItems, setSplitItems] = useState([]);
+  const [itemsList, setItemsList] = useState([]);
 
   function addReceipt() {
     if (receiptAmount < 9) {
@@ -43,7 +44,7 @@ export default function Home() {
         {
           id: receiptDetails.length + 1,
           name: `receipt ${receiptDetails.length + 1}`,
-          items: [],
+          itemsId: [],
           total: 0,
           active: false,
         },
@@ -116,26 +117,35 @@ export default function Home() {
   function splitComplete() {
     if (splitItems.length > 0) {
       const splitAmount = itemCost / splitItems.length;
-      console.log(splitAmount);
       const newReceiptDetails = receiptDetails.map((receipt) => {
         if (splitItems.includes(receipt.id)) {
           return {
             ...receipt,
             active: false,
             total: receipt.total + splitAmount,
-            items: [...receipt.items, splitAmount],
+            itemsId: [...receipt.itemsId, itemsList.length + 1],
           };
         }
         return receipt;
       });
 
+      setItemsList((itemsList) => [
+        ...itemsList,
+        {
+          id: itemsList.length + 1,
+          name: `item ${itemsList.length + 1}`,
+          total: itemCost,
+        },
+      ]);
       setItemCost(0);
       setSplitItems([]);
       setReceiptDetails(newReceiptDetails);
       setRemainingSubtotal(
         Math.round((remainingSubtotal - itemCost) * 100) / 100
       );
-      console.log(evenSplit());
+
+      console.log(itemsList);
+      console.log(receiptDetails);
     }
   }
 
@@ -180,7 +190,7 @@ export default function Home() {
   }
 
   return (
-    <main className="h-full touch-manipulation">
+    <main className="h-full touch-manipulation flex justify-center">
       {showReceiptCount ? (
         <Receipts
           receiptDetails={receiptDetails}
@@ -220,6 +230,7 @@ export default function Home() {
           subtotal={subtotal}
           toItemEntryPage={toItemEntryPage}
           receiptDetails={receiptDetails}
+          itemsList={itemsList}
         />
       ) : null}
     </main>

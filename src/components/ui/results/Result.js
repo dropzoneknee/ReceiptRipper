@@ -34,9 +34,9 @@ export default function Result(props) {
       </div>
 
       <div className="h-min bg-white  shadow w-11/12 mb-2">
-        <h1 className="ml-4 mt-2 mb-2 text-xl">order details</h1>
+        <h1 className="ml-4 mt-2 mb-4 text-xl">order details</h1>
         {props.receiptDetails.map((data) => (
-          <div className="flex felx-col ml-4 mb-2 mr-4" key={data.id}>
+          <div className="flex flex-col ml-4 mb-4 mr-4" key={data.id}>
             <div className="flex grow">
               <h1 className="">{data.name}</h1>
               <div className="flex grow"></div>
@@ -51,12 +51,20 @@ export default function Result(props) {
                 </h1>
               </div>
             </div>
+            <div className="flex opacity-40">
+              {data.itemsId.map((item, index) => (
+                <div key={data.id + index} className="mr-2">
+                  item {item}
+                  {index < data.itemsId.length - 1 ? "," : null}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
 
       <div className="h-min bg-white shadow w-11/12 mb-2">
-        <h1 className="ml-4 mt-2 mb-2 text-xl">total</h1>
+        <h1 className="ml-4 mt-2 mb-4 text-xl">total</h1>
         <div className="flex ml-4 mr-4 mb-2">
           <h1>subtotal</h1>
           <div className="grow"></div>
