@@ -1,8 +1,15 @@
+import { MdPeopleAlt } from "react-icons/md";
+
 export default function ReceiptsAddition(props) {
   return (
     <div className="howMany flex justify-center items-center grow ">
       <div className="flex flex-col justify-center items-center">
-        <h2 className="text-2xl mb-4">how many?</h2>
+        <div className="flex justify-center items-center mb-4">
+          <h2 className="text-2xl">how many?</h2>
+          <div className="ml-3 text-2xl">
+            <MdPeopleAlt />
+          </div>
+        </div>
         <div className="flex justify-center">
           <h1 className="text-8xl">{props.receiptAmount}</h1>
           <div className="flex flex-col ml-7">

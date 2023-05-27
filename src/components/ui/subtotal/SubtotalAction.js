@@ -13,8 +13,9 @@ export default function SubtotalAction(props) {
         <div className="grow"></div>
       </div>
       <div className="flex flex-col justify-center items-center grow">
-        <div className="flex justify-center mb-2">
+        <div className="flex justify-center mb-2 flex-col items-center">
           <h2 className="text-2xl text-white">enter subtotal</h2>
+          <p className="text-white opacity-30">&#40;before tax & tip&#41;</p>
         </div>
         <div
           className={

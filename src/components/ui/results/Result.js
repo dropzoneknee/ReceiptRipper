@@ -16,7 +16,7 @@ export default function Result(props) {
   const [tipPercentage, setTipPercentage] = useState(DEFAULT_TIP);
 
   return (
-    <div className="max-w-md bg-neutral-950 overflow-hidden flex flex-col grow items-center h-full">
+    <div className="max-w-md bg-neutral-950 flex flex-col grow items-center h-full">
       <div className="flex items-center h-14 shadow mb-2 w-full bg-neutral-900 text-white">
         <button
           className="text-5xl active:opacity-100 opacity-50 ml-1"

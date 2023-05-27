@@ -43,7 +43,7 @@ export default function ItemEntryAction(props) {
           $<h1 className="text-6xl">{props.itemCost.toFixed(2)}</h1>
         </div>
         <h3 className="opacity-50">
-          remaining subtotal {props.remainingSubtotal.toFixed(2)}
+          &#40;remaining subtotal {props.remainingSubtotal.toFixed(2)}&#41;
         </h3>
       </div>
 
