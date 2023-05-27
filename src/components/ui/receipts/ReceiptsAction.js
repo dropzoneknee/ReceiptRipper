@@ -7,35 +7,35 @@ export default function ReceiptsAction(props) {
   };
 
   return (
-    <div className="flex-col flex grow ">
-      <div className="flex h-1/6 items-start mr-1 ml-3">
+    <div className="flex-col flex grow">
+      <div className="flex h-14 items-start mr-1 ml-3">
         <button
-          className="mt-2 text-4xl active:opacity-100 opacity-50"
+          className="mt-2 text-4xl active:opacity-100 opacity-50 text-white"
           onClick={() => location.reload()}
         >
           <MdRefresh />
         </button>
         <div className="grow"></div>
         <button
-          className="text-5xl active:opacity-100 opacity-50"
+          className="text-5xl active:opacity-100 opacity-50 text-white"
           onClick={props.toSubtotalPage}
         >
           <MdKeyboardArrowRight />
         </button>
       </div>
-      <div className="h-4/6 flex items-center justify-center grow">
+      <div className="flex items-center justify-center grow">
         <form
           autoComplete="off"
-          className="grid grid-cols-3 gap-8"
+          className="grid grid-cols-3 gap-6"
           onSubmit={submit}
         >
           {props.receiptDetails.map((data, index) => (
             <div
-              className="flex flex-col items-center justify-center text-sm"
+              className="flex flex-col items-center justify-center text-sm bg-neutral-900"
               key={index}
             >
               <Image
-                src="/receipt.svg"
+                src="/receipt.png"
                 alt="Receipt"
                 className="mb-2"
                 width={64}
@@ -47,7 +47,7 @@ export default function ReceiptsAction(props) {
                 name="name"
                 placeholder="Enter Name"
                 value={data.name}
-                className="w-20 text-center"
+                className="w-20 text-center bg-neutral-900 text-white"
                 autoComplete="off"
                 maxLength="10"
                 onClick={(event) =>
@@ -61,7 +61,7 @@ export default function ReceiptsAction(props) {
       </div>
       <div className="h-1/6 flex justify-center items-end">
         <button
-          className="bg-indigo-500 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 mb-2 border-indigo-700"
+          className="bg-neutral-800 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 mb-2 border-neutral-950"
           onClick={props.toSubtotalPage}
         >
           confirm

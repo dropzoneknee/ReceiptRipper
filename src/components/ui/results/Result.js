@@ -16,8 +16,8 @@ export default function Result(props) {
   const [tipPercentage, setTipPercentage] = useState(DEFAULT_TIP);
 
   return (
-    <div className="max-w-md bg-gray-100 overflow-hidden flex flex-col grow items-center h-full">
-      <div className="flex bg-white items-center h-14 shadow mb-2 w-full">
+    <div className="max-w-md bg-neutral-950 overflow-hidden flex flex-col grow items-center h-full">
+      <div className="flex items-center h-14 shadow mb-2 w-full bg-neutral-900 text-white">
         <button
           className="text-5xl active:opacity-100 opacity-50 ml-1"
           onClick={props.toItemEntryPage}
@@ -33,7 +33,7 @@ export default function Result(props) {
         </button>
       </div>
 
-      <div className="h-min bg-white  shadow w-11/12 mb-2">
+      <div className="h-min bg-neutral-900 text-white mt-2 shadow w-11/12 mb-4">
         <h1 className="ml-4 mt-2 mb-4 text-xl">order details</h1>
         {props.receiptDetails.map((data) => (
           <div className="flex flex-col ml-4 mb-4 mr-4" key={data.id}>
@@ -63,7 +63,7 @@ export default function Result(props) {
         ))}
       </div>
 
-      <div className="h-min bg-white shadow w-11/12 mb-2">
+      <div className="h-min bg-neutral-900 text-white shadow w-11/12 mb-2">
         <h1 className="ml-4 mt-2 mb-4 text-xl">total</h1>
         <div className="flex ml-4 mr-4 mb-2">
           <h1>subtotal</h1>
@@ -75,7 +75,7 @@ export default function Result(props) {
           <h1>tax</h1>
           <input
             value={taxPercentage}
-            className="w-20 text-center "
+            className="w-20 text-center bg-neutral-900"
             autoComplete="off"
             type="number"
             onChange={(event) => {
@@ -87,7 +87,7 @@ export default function Result(props) {
           $
           <input
             value={tax}
-            className="w-12 text-right "
+            className="w-12 text-right bg-neutral-900"
             autoComplete="off"
             type="number"
             onChange={(event) => {
@@ -101,7 +101,7 @@ export default function Result(props) {
           <h1>tip</h1>
           <input
             value={tipPercentage}
-            className="w-20 text-center "
+            className="w-20 text-center bg-neutral-900"
             autoComplete="off"
             type="number"
             onChange={(event) => {
@@ -113,7 +113,7 @@ export default function Result(props) {
           $
           <input
             value={tip}
-            className="w-12 text-right "
+            className="w-12 text-right bg-neutral-900"
             autoComplete="off"
             type="number"
             onChange={(event) => {

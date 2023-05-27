@@ -3,7 +3,7 @@ import Keypad from "@/components/form/Keypad";
 
 export default function Items(props) {
   return (
-    <div className="max-w-md bg-white overflow-hidden flex flex-col grow h-full">
+    <div className="max-w-md bg-neutral-900 overflow-hidden flex flex-col grow h-full">
       <div className="actionScreen h-2/3 overflow-hidden flex">
         <ItemEntryAction
           itemCost={props.itemCost}
@@ -17,7 +17,7 @@ export default function Items(props) {
           splitComplete={props.splitComplete}
         />
       </div>
-      <div className="interactionScreen h-1/3 bg-indigo-600 text-white overflow-hidden flex">
+      <div className="interactionScreen h-1/3 bg-neutral-900 text-white overflow-hidden flex">
         <Keypad
           changeState={props.changeState}
           subtractState={props.subtractState}

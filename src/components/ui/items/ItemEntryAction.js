@@ -4,7 +4,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 export default function ItemEntryAction(props) {
   return (
     <div className="flex-col grow justify-center items-center overflow-hidden">
-      <div className="flex h-1/10 grow justify-center">
+      <div className="flex h-14 grow justify-center text-white">
         <div className="flex items-start ml-1">
           <button
             className="text-5xl active:opacity-100 opacity-50"
@@ -29,7 +29,7 @@ export default function ItemEntryAction(props) {
           )}
         </div>
       </div>
-      <div className="h-2/10 flex-col flex grow justify-center items-center ">
+      <div className="h-2/10 flex-col flex grow justify-center items-center text-white">
         <div className="flex justify-center mb-1">
           <h2 className="text-2xl">enter item</h2>
         </div>
@@ -57,7 +57,7 @@ export default function ItemEntryAction(props) {
         >
           {props.receiptDetails.map((data) => (
             <div
-              className="flex justify-start items-center flex-col min-w-scroll"
+              className="flex justify-start items-center flex-col min-w-scroll text-white"
               key={data.id}
             >
               <button
@@ -67,7 +67,7 @@ export default function ItemEntryAction(props) {
                 }}
               >
                 <Image
-                  src="/receipt.svg"
+                  src="/receipt.png"
                   alt="Receipt"
                   className="mb-2"
                   width={64}
@@ -93,20 +93,20 @@ export default function ItemEntryAction(props) {
       <div className="h-1/10 flex justify-center items-end grow ">
         <div className="grow flex justify-center space-x-2">
           <button
-            className="bg-indigo-500 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-indigo-700"
+            className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
             onClick={props.splitComplete}
           >
             add item
           </button>
           {props.remainingSubtotal <= 0 ? (
             <button
-              className="bg-indigo-500 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-indigo-700"
+              className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
               onClick={props.toSplitBill}
             >
               done
             </button>
           ) : (
-            <button className="bg-indigo-500 mb-2 text-white rounded w-32 h-12 shadow-lg border-b-4 border-indigo-700 opacity-20 cursor-not-allowed">
+            <button className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 shadow-lg border-b-4 border-neutral-950 opacity-20 cursor-not-allowed">
               done
             </button>
           )}
