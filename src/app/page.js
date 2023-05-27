@@ -190,7 +190,7 @@ export default function Home() {
   }
 
   return (
-    <main className="h-full touch-manipulation flex justify-center">
+    <main className="h-full touch-manipulation flex justify-center bg-neutral-900">
       {showReceiptCount ? (
         <Receipts
           receiptDetails={receiptDetails}

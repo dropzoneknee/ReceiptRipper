@@ -10,6 +10,8 @@ export const metadata = {
   manifest: "/manifest.json",
   viewport:
     "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  themeColor: "#171717",
+  appleMobileWebAppCapable: "yes",
 };
 
 export default function RootLayout({ children }) {
@@ -17,8 +19,6 @@ export default function RootLayout({ children }) {
     <html lang="en" className="h-full">
       <Head>
         <link rel="icon" href="/favicon.ico" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#ffffff" />
         <meta name="application-name" content="PWA App" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -29,7 +29,6 @@ export default function RootLayout({ children }) {
         <meta name="msapplication-config" content="/icons/browserconfig.xml" />
         <meta name="msapplication-TileColor" content="#2B5797" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="theme-color" content="#000000" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
