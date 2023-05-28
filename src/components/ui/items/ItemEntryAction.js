@@ -92,12 +92,18 @@ export default function ItemEntryAction(props) {
       </div>
       <div className="h-1/10 flex justify-center items-end grow ">
         <div className="grow flex justify-center space-x-2">
-          <button
-            className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
-            onClick={props.splitComplete}
-          >
-            add item
-          </button>
+          {props.itemCost > 0 && props.splitItems.length > 0 ? (
+            <button
+              className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
+              onClick={props.splitComplete}
+            >
+              add item
+            </button>
+          ) : (
+            <button className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950 opacity-20 cursor-not-allowed">
+              add item
+            </button>
+          )}
           {props.remainingSubtotal <= 0 ? (
             <button
               className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
@@ -106,7 +112,7 @@ export default function ItemEntryAction(props) {
               done
             </button>
           ) : (
-            <button className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 shadow-lg border-b-4 border-neutral-950 opacity-20 cursor-not-allowed">
+            <button className="bg-neutral-800mb-2 text-white rounded w-32 h-12 shadow-lg border-b-4 border-neutral-950 opacity-20 cursor-not-allowed">
               done
             </button>
           )}

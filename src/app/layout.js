@@ -85,9 +85,9 @@ export default function RootLayout({ children }) {
         />
         <meta name="twitter:creator" content="@DavidWShadow" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="PWA App" />
+        <meta property="og:title" content="Receipt Ripper" />
         <meta property="og:description" content="Best PWA App in the world" />
-        <meta property="og:site_name" content="PWA App" />
+        <meta property="og:site_name" content="Receipt Ripper" />
         <meta property="og:url" content="https://yourdomain.com" />
         <meta
           property="og:image"
