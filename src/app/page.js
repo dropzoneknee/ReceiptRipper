@@ -10,14 +10,14 @@ export default function Home() {
     {
       id: 1,
       name: "receipt 1",
-      itemsId: [],
+      items: [],
       total: 0,
       active: false,
     },
     {
       id: 2,
       name: "receipt 2",
-      itemsId: [],
+      items: [],
       total: 0,
       active: false,
     },
@@ -44,7 +44,7 @@ export default function Home() {
         {
           id: receiptDetails.length + 1,
           name: `receipt ${receiptDetails.length + 1}`,
-          itemsId: [],
+          items: [],
           total: 0,
           active: false,
         },
@@ -123,7 +123,7 @@ export default function Home() {
             ...receipt,
             active: false,
             total: receipt.total + splitAmount,
-            itemsId: [...receipt.itemsId, itemsList.length + 1],
+            items: [...receipt.items, itemsList.length + 1],
           };
         }
         return receipt;
@@ -140,12 +140,7 @@ export default function Home() {
       setItemCost(0);
       setSplitItems([]);
       setReceiptDetails(newReceiptDetails);
-      setRemainingSubtotal(
-        Math.round((remainingSubtotal - itemCost) * 100) / 100
-      );
-
-      console.log(itemsList);
-      console.log(receiptDetails);
+      setRemainingSubtotal(toPrice(remainingSubtotal - itemCost));
     }
   }
 
@@ -181,12 +176,8 @@ export default function Home() {
     setReceiptDetails(newReceiptDetails);
   }
 
-  function evenSplit() {
-    return (
-      (Math.floor((itemCost / splitItems.length) * 100) / 100) *
-        splitItems.length ===
-      itemCost
-    );
+  function toPrice(num) {
+    return Math.round(num * 100) / 100;
   }
 
   return (
@@ -231,6 +222,8 @@ export default function Home() {
           toItemEntryPage={toItemEntryPage}
           receiptDetails={receiptDetails}
           itemsList={itemsList}
+          handleInputChange={handleInputChange}
+          toPrice={toPrice}
         />
       ) : null}
     </main>

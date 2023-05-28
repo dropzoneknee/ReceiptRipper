@@ -6,10 +6,10 @@ export default function Result(props) {
   const DEFAULT_TIP = 20;
 
   const [tax, setTax] = useState(
-    Math.round((props.subtotal / DEFAULT_TAX) * 100) / 100
+    props.toPrice(props.subtotal * (DEFAULT_TAX / 100))
   );
   const [tip, setTip] = useState(
-    Math.round((props.subtotal / DEFAULT_TIP) * 100) / 100
+    props.toPrice(props.subtotal * (DEFAULT_TIP / 100))
   );
 
   const [taxPercentage, setTaxPercentage] = useState(DEFAULT_TAX);
@@ -35,10 +35,22 @@ export default function Result(props) {
 
       <div className="h-min bg-neutral-900 text-white mt-2 shadow w-11/12 mb-4">
         <h1 className="ml-4 mt-2 mb-4 text-xl">order details</h1>
-        {props.receiptDetails.map((data) => (
-          <div className="flex flex-col ml-4 mb-4 mr-4" key={data.id}>
+        {props.receiptDetails.map((data, index) => (
+          <div className="flex flex-col ml-4 mb-4 mr-4 text-sm" key={data.id}>
             <div className="flex grow">
-              <h1 className="">{data.name}</h1>
+              <input
+                name="name"
+                placeholder="Enter Name"
+                value={data.name}
+                className="w-20 bg-neutral-900 text-white"
+                autoComplete="off"
+                maxLength="10"
+                onClick={(event) =>
+                  event.target.setSelectionRange(0, event.target.value.length)
+                }
+                onChange={(event) => props.handleInputChange(index, event)}
+              />
+
               <div className="flex grow"></div>
               <div className="flex justify-end items-end ">
                 <h1>
@@ -52,10 +64,10 @@ export default function Result(props) {
               </div>
             </div>
             <div className="flex opacity-40">
-              {data.itemsId.map((item, index) => (
+              {data.items.map((item, index) => (
                 <div key={data.id + index} className="mr-2">
                   item {item}
-                  {index < data.itemsId.length - 1 ? "," : null}
+                  {index < data.items.length - 1 ? "," : null}
                 </div>
               ))}
             </div>
@@ -63,7 +75,7 @@ export default function Result(props) {
         ))}
       </div>
 
-      <div className="h-min bg-neutral-900 text-white shadow w-11/12 mb-2">
+      <div className="h-min bg-neutral-900 text-white shadow w-11/12 mb-2 text-sm">
         <h1 className="ml-4 mt-2 mb-4 text-xl">total</h1>
         <div className="flex ml-4 mr-4 mb-2">
           <h1>subtotal</h1>
@@ -80,7 +92,9 @@ export default function Result(props) {
             type="number"
             onChange={(event) => {
               setTaxPercentage(event.target.value);
-              setTax((event.target.value / 100) * props.subtotal);
+              setTax(
+                props.toPrice((event.target.value / 100) * props.subtotal)
+              );
             }}
           />
           %<div className="grow"></div>
@@ -91,7 +105,9 @@ export default function Result(props) {
             autoComplete="off"
             type="number"
             onChange={(event) => {
-              setTaxPercentage((event.target.value / props.subtotal) * 100);
+              setTaxPercentage(
+                props.toPrice((event.target.value / props.subtotal) * 100)
+              );
               setTax(event.target.value);
             }}
           />
@@ -106,7 +122,9 @@ export default function Result(props) {
             type="number"
             onChange={(event) => {
               setTipPercentage(event.target.value);
-              setTip((event.target.value / 100) * props.subtotal);
+              setTip(
+                props.toPrice((event.target.value / 100) * props.subtotal)
+              );
             }}
           />
           %<div className="grow"></div>
@@ -117,7 +135,9 @@ export default function Result(props) {
             autoComplete="off"
             type="number"
             onChange={(event) => {
-              setTipPercentage((event.target.value / props.subtotal) * 100);
+              setTipPercentage(
+                props.toPrice((event.target.value / props.subtotal) * 100)
+              );
               setTip(event.target.value);
             }}
           />
@@ -126,14 +146,7 @@ export default function Result(props) {
         <div className="flex ml-4 mr-4 mb-2">
           <h1>grand total</h1>
           <div className="grow"></div>
-          <h1>
-            $
-            {(
-              (taxPercentage / 100) * props.subtotal +
-              (tipPercentage / 100) * props.subtotal +
-              props.subtotal
-            ).toFixed(2)}
-          </h1>
+          <h1>${(props.subtotal + tax + tip).toFixed(2)}</h1>
         </div>
       </div>
     </div>
