@@ -40,6 +40,10 @@ module.exports = {
       boxShadow: {
         blur: "0 0 5px 10px white",
       },
+
+      backgroundColor: {
+        modal: "rgba(100,100,100,0.5)",
+      },
     },
   },
   plugins: [],

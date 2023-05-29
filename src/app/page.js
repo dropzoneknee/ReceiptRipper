@@ -180,6 +180,13 @@ export default function Home() {
     return Math.round(num * 100) / 100;
   }
 
+  function handleChangeItemName(index, event) {
+    const newItemsList = [...itemsList];
+    newItemsList[index][event.target.name] = event.target.value;
+
+    setItemsList(newItemsList);
+  }
+
   return (
     <main className="h-full touch-manipulation flex justify-center bg-neutral-900">
       {showReceiptCount ? (
@@ -214,6 +221,8 @@ export default function Home() {
           splitComplete={splitComplete}
           changeState={changeItemCost}
           subtractState={subtractItemCost}
+          itemsList={itemsList}
+          handleChangeItemName={handleChangeItemName}
         />
       ) : null}
       {showResultsScreen ? (

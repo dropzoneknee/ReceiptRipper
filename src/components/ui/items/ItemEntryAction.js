@@ -1,5 +1,10 @@
 import Image from "next/image";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdEdit,
+  MdAddCircle,
+} from "react-icons/md";
 
 export default function ItemEntryAction(props) {
   return (
@@ -97,25 +102,28 @@ export default function ItemEntryAction(props) {
               className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
               onClick={props.splitComplete}
             >
-              add item
+              <div className="flex justify-center items-center space-x-1">
+                <h1>add</h1>
+                <MdAddCircle />
+              </div>
             </button>
           ) : (
             <button className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950 opacity-20 cursor-not-allowed">
-              add item
+              <div className="flex justify-center items-center space-x-1">
+                <h1>add</h1>
+                <MdAddCircle />
+              </div>
             </button>
           )}
-          {props.remainingSubtotal <= 0 ? (
-            <button
-              className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
-              onClick={props.toSplitBill}
-            >
-              done
-            </button>
-          ) : (
-            <button className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 shadow-lg border-b-4 border-neutral-950 opacity-20 cursor-not-allowed">
-              done
-            </button>
-          )}
+          <button
+            className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
+            onClick={() => props.setEditItemsModal(true)}
+          >
+            <div className="flex justify-center items-center space-x-1">
+              <h1>edit</h1>
+              <MdEdit />
+            </div>
+          </button>
         </div>
       </div>
     </div>

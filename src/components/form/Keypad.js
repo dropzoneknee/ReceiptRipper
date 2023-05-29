@@ -5,7 +5,7 @@ export default function Keypad(props) {
   const buttonStyles = "active:brightness-50 ";
 
   return (
-    <div className="flex justify-center grow items-center">
+    <div className="flex justify-center grow items-center text-white">
       <div className="grid grid-cols-3 gap-1">
         <button className={buttonStyles} onClick={() => props.changeState(1)}>
           <div className={keypadStyles}>1</div>
