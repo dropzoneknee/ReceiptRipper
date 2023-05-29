@@ -8,14 +8,23 @@ export default function ReceiptsAction(props) {
 
   return (
     <div className="flex-col flex grow">
-      <div className="flex h-14 items-start mr-1 ml-3">
+      <div className="flex h-14 items-center mr-1 ml-3">
         <button
           className="mt-2 text-4xl active:opacity-100 opacity-50 text-white"
           onClick={() => location.reload()}
         >
           <MdRefresh />
         </button>
-        <div className="grow"></div>
+        <div className="mt-2 grow flex justify-center items-center ml-1">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            className=""
+            width={1000 / 31}
+            height={965 / 31}
+            priority
+          />
+        </div>
         <button
           className="text-5xl active:opacity-100 opacity-50 text-white"
           onClick={props.toSubtotalPage}

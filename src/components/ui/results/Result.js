@@ -1,5 +1,6 @@
-import { MdKeyboardArrowLeft, MdRefresh } from "react-icons/md";
+import { MdKeyboardArrowLeft, MdRefresh, MdClose } from "react-icons/md";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Result(props) {
   const DEFAULT_TAX = 8.38;
@@ -10,22 +11,29 @@ export default function Result(props) {
       name: "tax",
       total: props.toPrice(props.subtotal * (DEFAULT_TAX / 100)),
       percentage: DEFAULT_TAX,
+      isDiscount: false,
     },
     {
       id: 2,
       name: "tip",
       total: props.toPrice(props.subtotal * (DEFAULT_TIP / 100)),
       percentage: DEFAULT_TIP,
+      isDiscount: false,
     },
   ];
 
   const [modifiers, setModifiers] = useState(DEFAULT_MODIFIERS);
+  const [title, setTitle] = useState("order details");
 
   function applyModifiers(num) {
     return (
       num +
       modifiers
-        .map((mod) => (mod.percentage * num) / 100)
+        .map((mod) =>
+          mod.isDiscount
+            ? (mod.percentage * num) / -100
+            : (mod.percentage * num) / 100
+        )
         .reduce(function (a, b) {
           return a + b;
         })
@@ -52,26 +60,67 @@ export default function Result(props) {
     setModifiers(newModifiers);
   }
 
+  function handleAddModifier() {
+    setModifiers([
+      ...modifiers,
+      {
+        id: modifiers.length + 1,
+        name: "change name",
+        total: 0,
+        percentage: 0,
+        isDiscount: false,
+      },
+    ]);
+  }
+
+  function handleChangeModifierName(index, event) {
+    const newModifiers = [...modifiers];
+    newModifiers[index].name = event.target.value;
+
+    setModifiers(newModifiers);
+  }
+
   return (
-    <div className="max-w-md bg-neutral-950 flex flex-col grow items-center h-full">
-      <div className="flex items-center h-14 shadow mb-2 w-full bg-neutral-900 text-white">
+    <div className="max-w-md bg-neutral-900 flex flex-col grow items-center h-full">
+      <div className="flex items-center h-14 w-full bg-neutral-900 text-white">
         <button
-          className="text-5xl active:opacity-100 opacity-50 ml-1"
+          className="text-5xl active:opacity-100 opacity-50 ml-1 mt-2"
           onClick={props.toItemEntryPage}
         >
           <MdKeyboardArrowLeft />
         </button>
-        <div className="grow flex justify-center items-center h-full"></div>
+        <div className="grow flex justify-center items-center h-full mt-2">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            className=""
+            width={1000 / 31}
+            height={965 / 31}
+            priority
+          />
+        </div>
         <button
-          className="text-4xl active:opacity-100 opacity-50 mr-3 "
+          className="text-4xl active:opacity-100 opacity-50 mr-3 mt-2"
           onClick={() => location.reload()}
         >
           <MdRefresh />
         </button>
       </div>
 
-      <div className="h-min bg-neutral-900 text-white mt-2 shadow w-11/12 mb-4">
-        <h1 className="ml-4 mt-2 mb-4 text-xl">order details</h1>
+      <div className="h-min text-white w-full mt-2 mb-4 bg-neutral-900">
+        <h1 className="ml-4 mt-4 mb-4 mr-4 text-xl">
+          <input
+            name="name"
+            value={title}
+            className="w-full bg-transparent text-white"
+            autoComplete="off"
+            maxLength="20"
+            onClick={(event) =>
+              event.target.setSelectionRange(0, event.target.value.length)
+            }
+            onChange={(event) => setTitle(event.target.value)}
+          />
+        </h1>
         {props.receiptDetails.map((data, index) => (
           <div className="flex flex-col ml-4 mb-4 mr-4 text-sm" key={data.id}>
             <div className="flex grow">
@@ -79,7 +128,7 @@ export default function Result(props) {
                 name="name"
                 placeholder="Enter Name"
                 value={data.name}
-                className="w-20 bg-neutral-900 text-white"
+                className="w-20 bg-transparent text-white"
                 autoComplete="off"
                 maxLength="10"
                 onClick={(event) =>
@@ -105,20 +154,47 @@ export default function Result(props) {
         ))}
       </div>
 
-      <div className="h-min bg-neutral-900 text-white shadow w-11/12 mb-2 text-sm">
+      <div className="h-min bg-neutral-900 text-white w-full mb-4 text-sm">
         <h1 className="ml-4 mt-2 mb-4 text-xl">total</h1>
         <div className="flex ml-4 mr-4 mb-2">
           <h1>subtotal</h1>
           <div className="grow"></div>
-          <h1>${props.subtotal.toFixed(2)}</h1>
+          <h1 className="">$</h1>
+          <h1 className="w-12 text-right">{props.subtotal.toFixed(2)}</h1>
         </div>
 
         {modifiers.map((data, index) => (
           <div className="flex ml-4 mr-4 mb-2" key={"modifiers" + index}>
-            <h1 className="mr-2">{data.name}</h1>
+            {index < 2 ? (
+              <h1 className="mr-2">{data.name}</h1>
+            ) : (
+              <div className="flex">
+                <button
+                  className="flex justify-center items-center mr-2 text-red-500"
+                  onClick={() =>
+                    setModifiers((modifiers) =>
+                      modifiers.filter((i) => i.id !== data.id)
+                    )
+                  }
+                >
+                  <MdClose />
+                </button>
+                <input
+                  name="name"
+                  value={data.name}
+                  className="w-28 bg-transparent text-white"
+                  autoComplete="off"
+                  maxLength="15"
+                  onClick={(event) =>
+                    event.target.setSelectionRange(0, event.target.value.length)
+                  }
+                  onChange={(event) => handleChangeModifierName(index, event)}
+                />
+              </div>
+            )}
             <input
               value={data.percentage}
-              className="w-10 bg-neutral-900"
+              className="w-10 bg-transparent"
               autoComplete="off"
               type="number"
               onChange={(event) => handlePercentageChange(index, event)}
@@ -127,7 +203,7 @@ export default function Result(props) {
             $
             <input
               value={data.total}
-              className="w-12 text-right bg-neutral-900"
+              className="w-12 text-right bg-transparent"
               autoComplete="off"
               type="number"
               onChange={(event) => handleTotalChange(index, event)}
@@ -135,11 +211,23 @@ export default function Result(props) {
           </div>
         ))}
 
-        <div className="flex ml-4 mr-4 mb-2">
-          <h1>grand total</h1>
+        <div className="flex ml-4 mr-4 mb-4">
+          <h1 className="">grand total</h1>
           <div className="grow"></div>
-          <h1>${props.toPrice(applyModifiers(props.subtotal))}</h1>
+          <h1 className="">$</h1>
+          <h1 className="w-12 text-right">
+            {props.toPrice(applyModifiers(props.subtotal)).toFixed(2)}
+          </h1>
         </div>
+      </div>
+
+      <div className="flex justify-center items-center h-16 w-full ">
+        <button
+          className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 active:brightness-50 shadow-lg border-b-4 border-neutral-950"
+          onClick={handleAddModifier}
+        >
+          add extras
+        </button>
       </div>
     </div>
   );

@@ -1,16 +1,17 @@
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowLeft } from "react-icons/md";
+import Image from "next/image";
 
 export default function SubtotalAction(props) {
   return (
     <div className="flex-col flex grow justify-center items-center">
       <div className="flex h-14 items-start mr-1 ml-1 w-full">
         <button
-          className="text-5xl active:opacity-100 opacity-50 text-white"
+          className="text-5xl active:opacity-100 opacity-50 text-white mt-2 ml-1"
           onClick={props.toReceiptsPage}
         >
           <MdKeyboardArrowLeft />
         </button>
-        <div className="grow"></div>
+        <div className="mt-2 grow flex justify-center items-center"></div>
       </div>
       <div className="flex flex-col justify-center items-center grow">
         <div className="flex justify-center mb-2 flex-col items-center">

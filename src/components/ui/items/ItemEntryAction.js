@@ -4,10 +4,10 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 export default function ItemEntryAction(props) {
   return (
     <div className="flex-col grow justify-center items-center overflow-hidden">
-      <div className="flex h-14 grow justify-center text-white">
+      <div className="flex h-14 grow text-center justify-center text-white">
         <div className="flex items-start ml-1">
           <button
-            className="text-5xl active:opacity-100 opacity-50"
+            className="text-5xl active:opacity-100 opacity-50 mt-2"
             onClick={props.toSubtotalPage}
           >
             <MdKeyboardArrowLeft />
@@ -17,13 +17,13 @@ export default function ItemEntryAction(props) {
         <div className="items-end mr-1">
           {props.remainingSubtotal <= 0 ? (
             <button
-              className="text-5xl active:opacity-100 opacity-50"
+              className="text-5xl active:opacity-100 opacity-50 mt-2"
               onClick={props.toSplitBill}
             >
               <MdKeyboardArrowRight />
             </button>
           ) : (
-            <button className="text-5xl opacity-10 cursor-not-allowed">
+            <button className="text-5xl opacity-10 cursor-not-allowed mt-2">
               <MdKeyboardArrowRight />
             </button>
           )}
