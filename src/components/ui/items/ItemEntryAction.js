@@ -112,7 +112,7 @@ export default function ItemEntryAction(props) {
               done
             </button>
           ) : (
-            <button className="bg-neutral-800mb-2 text-white rounded w-32 h-12 shadow-lg border-b-4 border-neutral-950 opacity-20 cursor-not-allowed">
+            <button className="bg-neutral-800 mb-2 text-white rounded w-32 h-12 shadow-lg border-b-4 border-neutral-950 opacity-20 cursor-not-allowed">
               done
             </button>
           )}

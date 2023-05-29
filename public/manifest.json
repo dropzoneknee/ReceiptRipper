@@ -1,6 +1,6 @@
 {
-  "name": "Receipt Ripper",
-  "short_name": "Receipt Ripper",
+  "name": "Receipper",
+  "short_name": "Receipper",
   "description": "split bills for restaurants, movies, bars, and everything using Receipt Ripper",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",

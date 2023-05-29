@@ -5,7 +5,7 @@ import Head from "next/head";
 const fira = Fira_Mono({ subsets: ["latin"], weight: "500" });
 
 export const metadata = {
-  title: "Receipt Ripper",
+  title: "Receipper",
   description: "split your receipt with your friends",
   manifest: "/manifest.json",
   viewport:
