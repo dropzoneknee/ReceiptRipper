@@ -25,7 +25,6 @@ export default function Home() {
 
   const [receiptAmount, setReceiptAmount] = useState(2);
   const [subtotal, setSubtotal] = useState(0);
-  const [remainingSubtotal, setRemainingSubtotal] = useState(0);
   const [receiptDetails, setReceiptDetails] = useState(initialReceipts);
   const [itemCost, setItemCost] = useState(0);
 
@@ -36,28 +35,32 @@ export default function Home() {
   const [splitItems, setSplitItems] = useState([]);
   const [itemsList, setItemsList] = useState([]);
 
+  const [currentItemId, setCurrentItemId] = useState(0);
+  const [currentReceiptId, setCurrentReceiptId] = useState(
+    initialReceipts.length
+  );
+
   function addReceipt() {
     if (receiptAmount < 9) {
       setReceiptAmount(receiptAmount + 1);
       setReceiptDetails((receiptDetail) => [
         ...receiptDetail,
         {
-          id: receiptDetails.length + 1,
-          name: `receipt ${receiptDetails.length + 1}`,
+          id: currentReceiptId + 1,
+          name: `receipt ${currentReceiptId + 1}`,
           items: [],
           total: 0,
           active: false,
         },
       ]);
+      setCurrentReceiptId(currentReceiptId + 1);
     }
   }
 
   function subtractReceipt() {
     if (receiptAmount > 2) {
       setReceiptAmount(receiptAmount - 1);
-      setReceiptDetails((receiptDetails) =>
-        receiptDetails.filter((receipt) => receipt.id !== receiptDetails.length)
-      );
+      setReceiptDetails(receiptDetails.splice(0, receiptDetails.length - 1));
     }
   }
 
@@ -84,7 +87,7 @@ export default function Home() {
   function changeItemCost(keypadNum) {
     const MOVE_DECIMAL = Math.round(itemCost * 100) * 10;
     const ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
-    if (ADD_NUM_AND_MOVE_DECIMAL <= remainingSubtotal) {
+    if (ADD_NUM_AND_MOVE_DECIMAL <= subtotal - sumOfItemsEntered()) {
       setItemCost(ADD_NUM_AND_MOVE_DECIMAL);
     }
   }
@@ -123,7 +126,7 @@ export default function Home() {
             ...receipt,
             active: false,
             total: receipt.total + splitAmount,
-            items: [...receipt.items, itemsList.length + 1],
+            items: [...receipt.items, currentItemId + 1],
           };
         }
         return receipt;
@@ -132,15 +135,16 @@ export default function Home() {
       setItemsList((itemsList) => [
         ...itemsList,
         {
-          id: itemsList.length + 1,
-          name: `item ${itemsList.length + 1}`,
+          id: currentItemId + 1,
+          name: `item ${currentItemId + 1}`,
           total: itemCost,
+          splitAmount: splitAmount,
         },
       ]);
+      setCurrentItemId(currentItemId + 1);
       setItemCost(0);
       setSplitItems([]);
       setReceiptDetails(newReceiptDetails);
-      setRemainingSubtotal(toPrice(remainingSubtotal - itemCost));
     }
   }
 
@@ -153,7 +157,6 @@ export default function Home() {
     setShowSubtotal(false);
     setShowItemEntry(true);
     setShowResultsScreen(false);
-    setRemainingSubtotal(subtotal - sumOfItemsEntered());
   }
 
   function toSplitBill() {
@@ -187,6 +190,22 @@ export default function Home() {
     setItemsList(newItemsList);
   }
 
+  function handleDeleteItem(id) {
+    const ITEM_TO_DELETE = itemsList.find((items) => items.id === id);
+    const newReceiptDetails = receiptDetails.map((receipt) => {
+      if (receipt.items.includes(id)) {
+        return {
+          ...receipt,
+          items: receipt.items.filter((items) => items !== id),
+          total: receipt.total - ITEM_TO_DELETE.splitAmount,
+        };
+      }
+      return receipt;
+    });
+    setReceiptDetails(newReceiptDetails);
+    setItemsList((itemsList) => itemsList.filter((items) => items.id !== id));
+  }
+
   return (
     <main className="h-full touch-manipulation flex justify-center bg-neutral-900">
       {showReceiptCount ? (
@@ -211,7 +230,6 @@ export default function Home() {
       {showItemEntry ? (
         <Items
           itemCost={itemCost}
-          remainingSubtotal={remainingSubtotal}
           sumOfItemsEntered={sumOfItemsEntered}
           receiptDetails={receiptDetails}
           toSubtotalPage={toSubtotalPage}
@@ -223,6 +241,8 @@ export default function Home() {
           subtractState={subtractItemCost}
           itemsList={itemsList}
           handleChangeItemName={handleChangeItemName}
+          handleDeleteItem={handleDeleteItem}
+          subtotal={subtotal}
         />
       ) : null}
       {showResultsScreen ? (

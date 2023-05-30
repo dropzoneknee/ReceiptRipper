@@ -35,7 +35,11 @@ export default function ReceiptsAction(props) {
       <div className="flex items-center justify-center grow">
         <form
           autoComplete="off"
-          className="grid grid-cols-3 gap-6"
+          className={
+            props.receiptDetails.length > 2
+              ? "grid grid-cols-3 gap-6"
+              : "grid grid-cols-2 gap-6"
+          }
           onSubmit={submit}
         >
           {props.receiptDetails.map((data, index) => (

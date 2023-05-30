@@ -20,7 +20,7 @@ export default function ItemEntryAction(props) {
         </div>
         <div className="grow"></div>
         <div className="items-end mr-1">
-          {props.remainingSubtotal <= 0 ? (
+          {props.subtotal - props.sumOfItemsEntered() <= 0 ? (
             <button
               className="text-5xl active:opacity-100 opacity-50 mt-2"
               onClick={props.toSplitBill}
@@ -48,7 +48,8 @@ export default function ItemEntryAction(props) {
           $<h1 className="text-6xl">{props.itemCost.toFixed(2)}</h1>
         </div>
         <h3 className="opacity-50">
-          &#40;remaining subtotal {props.remainingSubtotal.toFixed(2)}&#41;
+          &#40;remaining subtotal{" "}
+          {(props.subtotal - props.sumOfItemsEntered()).toFixed(2)}&#41;
         </h3>
       </div>
 
