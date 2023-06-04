@@ -2,7 +2,7 @@ import { useState } from "react";
 import ItemEntryAction from "./ItemEntryAction";
 import Keypad from "@/components/form/Keypad";
 
-import { MdClose, MdFastfood } from "react-icons/md";
+import { MdClose, MdFastfood, MdCancel } from "react-icons/md";
 
 export default function Items(props) {
   const [editItemsModal, setEditItemsModal] = useState(false);
@@ -42,7 +42,7 @@ export default function Items(props) {
                     className="text-red-500"
                     onClick={() => props.handleDeleteItem(item.id)}
                   >
-                    <MdClose />
+                    <MdCancel />
                   </button>
                   <input
                     name="name"

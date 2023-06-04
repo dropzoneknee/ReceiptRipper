@@ -177,7 +177,7 @@ export default function Result(props) {
             <div className="flex opacity-40">
               {data.items.map((item, index) => (
                 <div key={data.id + index} className="mr-2">
-                  {props.itemsList.find((items) => items.id === item).name}
+                  {props.itemsList.find((items) => items.id === item.id).name}
                   {index < data.items.length - 1 ? "," : null}
                 </div>
               ))}

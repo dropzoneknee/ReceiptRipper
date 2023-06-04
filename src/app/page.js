@@ -47,7 +47,7 @@ export default function Home() {
         ...receiptDetail,
         {
           id: currentReceiptId + 1,
-          name: `receipt ${currentReceiptId + 1}`,
+          name: `receipt ${receiptDetail.length + 1}`,
           items: [],
           total: 0,
           active: false,
@@ -87,7 +87,7 @@ export default function Home() {
   function changeItemCost(keypadNum) {
     const MOVE_DECIMAL = Math.round(itemCost * 100) * 10;
     const ADD_NUM_AND_MOVE_DECIMAL = (MOVE_DECIMAL + keypadNum) / 100;
-    if (ADD_NUM_AND_MOVE_DECIMAL <= subtotal - sumOfItemsEntered()) {
+    if (ADD_NUM_AND_MOVE_DECIMAL <= toPrice(subtotal - sumOfItemsEntered())) {
       setItemCost(ADD_NUM_AND_MOVE_DECIMAL);
     }
   }
@@ -126,7 +126,10 @@ export default function Home() {
             ...receipt,
             active: false,
             total: receipt.total + splitAmount,
-            items: [...receipt.items, currentItemId + 1],
+            items: [
+              ...receipt.items,
+              { id: currentItemId + 1, split: splitAmount },
+            ],
           };
         }
         return receipt;
@@ -180,7 +183,7 @@ export default function Home() {
   }
 
   function toPrice(num) {
-    return Math.round(num * 100) / 100;
+    return Math.floor(num * 100) / 100;
   }
 
   function handleChangeItemName(index, event) {
@@ -192,16 +195,16 @@ export default function Home() {
 
   function handleDeleteItem(id) {
     const ITEM_TO_DELETE = itemsList.find((items) => items.id === id);
-    const newReceiptDetails = receiptDetails.map((receipt) => {
-      if (receipt.items.includes(id)) {
-        return {
-          ...receipt,
-          items: receipt.items.filter((items) => items !== id),
-          total: receipt.total - ITEM_TO_DELETE.splitAmount,
-        };
-      }
-      return receipt;
+
+    let newReceiptDetails = structuredClone(receiptDetails);
+    newReceiptDetails = newReceiptDetails.map((receipt) => {
+      return {
+        ...receipt,
+        items: receipt.items.filter((items) => items.id !== id),
+        total: receipt.total - ITEM_TO_DELETE.splitAmount,
+      };
     });
+
     setReceiptDetails(newReceiptDetails);
     setItemsList((itemsList) => itemsList.filter((items) => items.id !== id));
   }
