@@ -70,6 +70,7 @@ export default function Items(props) {
       ) : null}
       <div className="actionScreen h-2/3 overflow-hidden flex">
         <ItemEntryAction
+          toPrice={props.toPrice}
           itemCost={props.itemCost}
           sumOfItemsEntered={props.sumOfItemsEntered}
           receiptDetails={props.receiptDetails}
@@ -79,6 +80,7 @@ export default function Items(props) {
           splitItems={props.splitItems}
           splitComplete={props.splitComplete}
           setEditItemsModal={setEditItemsModal}
+          setItemCost={props.setItemCost}
           subtotal={props.subtotal}
         />
       </div>

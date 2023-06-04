@@ -5,3 +5,18 @@
 body {
   height: 100%;
 }
+
+.cursor {
+  background: white;
+  margin-left: 3px;
+  animation: blink 2s infinite;
+  width: 2px;
+  height: 2rem;
+  opacity: 100%;
+}
+
+@keyframes blink {
+  0% {background: transparent}
+  50% {background: #fff}
+  100% {background: transparent}
+}

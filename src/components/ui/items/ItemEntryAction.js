@@ -4,6 +4,7 @@ import {
   MdKeyboardArrowRight,
   MdEdit,
   MdAddCircle,
+  MdCancel,
 } from "react-icons/md";
 
 export default function ItemEntryAction(props) {
@@ -20,7 +21,7 @@ export default function ItemEntryAction(props) {
         </div>
         <div className="grow"></div>
         <div className="items-end mr-1">
-          {props.subtotal - props.sumOfItemsEntered() <= 0 ? (
+          {props.toPrice(props.subtotal - props.sumOfItemsEntered()) <= 0 ? (
             <button
               className="text-5xl active:opacity-100 opacity-50 mt-2"
               onClick={props.toSplitBill}
@@ -38,16 +39,19 @@ export default function ItemEntryAction(props) {
         <div className="flex justify-center mb-1">
           <h2 className="text-2xl">enter item</h2>
         </div>
-        <div
-          className={
-            props.itemCost == 0
-              ? "opacity-30 flex justify-center mb-1"
-              : "flex justify-center mb-1"
-          }
-        >
-          $<h1 className="text-6xl">{props.itemCost.toFixed(2)}</h1>
+        <div className="grid grid-cols-4">
+          <h1 className="flex justify-end">$</h1>
+          <h1 className="text-5xl col-span-2">{props.itemCost.toFixed(2)}</h1>
+          <div className="flex items-center">
+            <div className="cursor"></div>
+            <div className="flex items-start grow h-full mt-2 ml-3">
+              <button onClick={() => props.setItemCost(0)}>
+                <MdCancel />
+              </button>
+            </div>
+          </div>
         </div>
-        <h3 className="opacity-50">
+        <h3 className="opacity-50 text-sm">
           &#40;remaining subtotal{" "}
           {(props.subtotal - props.sumOfItemsEntered()).toFixed(2)}&#41;
         </h3>

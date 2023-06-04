@@ -119,7 +119,7 @@ export default function Home() {
 
   function splitComplete() {
     if (splitItems.length > 0) {
-      const splitAmount = itemCost / splitItems.length;
+      const splitAmount = toPrice(itemCost / splitItems.length);
       const newReceiptDetails = receiptDetails.map((receipt) => {
         if (splitItems.includes(receipt.id)) {
           return {
@@ -243,6 +243,8 @@ export default function Home() {
           handleChangeItemName={handleChangeItemName}
           handleDeleteItem={handleDeleteItem}
           subtotal={subtotal}
+          toPrice={toPrice}
+          setItemCost={setItemCost}
         />
       ) : null}
       {showResultsScreen ? (
