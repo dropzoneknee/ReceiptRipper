@@ -120,12 +120,13 @@ export default function Home() {
   function splitComplete() {
     if (splitItems.length > 0) {
       const splitAmount = toPrice(itemCost / splitItems.length);
-      const newReceiptDetails = receiptDetails.map((receipt) => {
+      let realSplit = toPrice(splitAmount * splitItems.length);
+      const realReceiptDetails = receiptDetails.map((receipt) => {
         if (splitItems.includes(receipt.id)) {
           return {
             ...receipt,
             active: false,
-            total: receipt.total + splitAmount,
+            total: (toInteger(receipt.total) + toInteger(splitAmount)) / 100,
             items: [
               ...receipt.items,
               { id: currentItemId + 1, split: splitAmount },
@@ -134,6 +135,31 @@ export default function Home() {
         }
         return receipt;
       });
+
+      let newReceiptDetails = structuredClone(realReceiptDetails);
+      for (let i = 0; i < splitItems.length; i++) {
+        if (realSplit < itemCost) {
+          newReceiptDetails = newReceiptDetails.map((receipt) => {
+            if (splitItems[i] === receipt.id) {
+              return {
+                ...receipt,
+                total: (toInteger(receipt.total) + 1) / 100,
+                items: receipt.items.map((item) => {
+                  if (item.id === currentItemId + 1) {
+                    return {
+                      ...item,
+                      split: toPrice(item.split + 0.01),
+                    };
+                  }
+                  return item;
+                }),
+              };
+            }
+            return receipt;
+          });
+          realSplit = toPrice(realSplit + 0.01);
+        }
+      }
 
       setItemsList((itemsList) => [
         ...itemsList,
@@ -194,19 +220,27 @@ export default function Home() {
   }
 
   function handleDeleteItem(id) {
-    const ITEM_TO_DELETE = itemsList.find((items) => items.id === id);
-
     let newReceiptDetails = structuredClone(receiptDetails);
     newReceiptDetails = newReceiptDetails.map((receipt) => {
-      return {
-        ...receipt,
-        items: receipt.items.filter((items) => items.id !== id),
-        total: receipt.total - ITEM_TO_DELETE.splitAmount,
-      };
+      if (receipt.items.map((item) => item.id).includes(id)) {
+        return {
+          ...receipt,
+          items: receipt.items.filter((items) => items.id !== id),
+          total:
+            (toInteger(receipt.total) -
+              toInteger(receipt.items.find((item) => item.id === id).split)) /
+            100,
+        };
+      }
+      return receipt;
     });
 
     setReceiptDetails(newReceiptDetails);
     setItemsList((itemsList) => itemsList.filter((items) => items.id !== id));
+  }
+
+  function toInteger(num) {
+    return Math.round(num * 100);
   }
 
   return (

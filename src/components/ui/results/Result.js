@@ -225,20 +225,23 @@ export default function Result(props) {
                 />
               </div>
             )}
+            %
             <input
               value={data.percentage}
-              className="w-10 bg-transparent"
+              className="w-10 bg-transparent ml-2"
               autoComplete="off"
               type="number"
+              inputMode="decimal"
               onChange={(event) => handlePercentageChange(index, event)}
             />
-            %<div className="grow"></div>
+            <div className="grow"></div>
             $
             <input
               value={data.total}
               className="w-12 text-right bg-transparent"
               autoComplete="off"
               type="number"
+              inputMode="decimal"
               onChange={(event) => handleTotalChange(index, event)}
             />
           </div>
