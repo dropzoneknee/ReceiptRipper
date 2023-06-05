@@ -119,14 +119,13 @@ export default function Home() {
 
   function splitComplete() {
     if (splitItems.length > 0) {
-      const splitAmount = toPrice(itemCost / splitItems.length);
-      let realSplit = toPrice(splitAmount * splitItems.length);
-      const realReceiptDetails = receiptDetails.map((receipt) => {
+      const splitAmount = itemCost / splitItems.length;
+      const newReceiptDetails = receiptDetails.map((receipt) => {
         if (splitItems.includes(receipt.id)) {
           return {
             ...receipt,
             active: false,
-            total: (toInteger(receipt.total) + toInteger(splitAmount)) / 100,
+            total: receipt.total + splitAmount,
             items: [
               ...receipt.items,
               { id: currentItemId + 1, split: splitAmount },
@@ -135,31 +134,6 @@ export default function Home() {
         }
         return receipt;
       });
-
-      let newReceiptDetails = structuredClone(realReceiptDetails);
-      for (let i = 0; i < splitItems.length; i++) {
-        if (realSplit < itemCost) {
-          newReceiptDetails = newReceiptDetails.map((receipt) => {
-            if (splitItems[i] === receipt.id) {
-              return {
-                ...receipt,
-                total: (toInteger(receipt.total) + 1) / 100,
-                items: receipt.items.map((item) => {
-                  if (item.id === currentItemId + 1) {
-                    return {
-                      ...item,
-                      split: toPrice(item.split + 0.01),
-                    };
-                  }
-                  return item;
-                }),
-              };
-            }
-            return receipt;
-          });
-          realSplit = toPrice(realSplit + 0.01);
-        }
-      }
 
       setItemsList((itemsList) => [
         ...itemsList,
@@ -227,9 +201,7 @@ export default function Home() {
           ...receipt,
           items: receipt.items.filter((items) => items.id !== id),
           total:
-            (toInteger(receipt.total) -
-              toInteger(receipt.items.find((item) => item.id === id).split)) /
-            100,
+            receipt.total - receipt.items.find((item) => item.id === id).split,
         };
       }
       return receipt;
@@ -237,10 +209,6 @@ export default function Home() {
 
     setReceiptDetails(newReceiptDetails);
     setItemsList((itemsList) => itemsList.filter((items) => items.id !== id));
-  }
-
-  function toInteger(num) {
-    return Math.round(num * 100);
   }
 
   return (
@@ -262,6 +230,7 @@ export default function Home() {
           subtotal={subtotal}
           changeState={changeSubtotal}
           subtractState={subtractSubtotal}
+          setSubtotal={setSubtotal}
         />
       ) : null}
       {showItemEntry ? (

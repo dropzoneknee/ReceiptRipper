@@ -9,6 +9,7 @@ export default function Subtotal(props) {
           toReceiptsPage={props.toReceiptsPage}
           toItemEntryPage={props.toItemEntryPage}
           subtotal={props.subtotal}
+          setSubtotal={props.setSubtotal}
         />
       </div>
       <div className="interactionScreen h-1/3 bg-neutral-900 text-white overflow-hidden flex">

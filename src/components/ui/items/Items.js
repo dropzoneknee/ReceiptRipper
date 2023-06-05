@@ -32,7 +32,7 @@ export default function Items(props) {
                 <MdClose />
               </button>
             </div>
-            <div>
+            <div className="h-2/3 overflow-scroll ">
               {props.itemsList.map((item, index) => (
                 <div
                   className="flex items-center space-x-2 ml-7 mb-2 mr-8"
