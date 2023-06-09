@@ -9,7 +9,7 @@ import ItemEntry from "./ItemEntry";
 
 export default function ItemEntryAction(props) {
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden w-full">
       <div className="flex h-14 grow text-center justify-center text-white">
         <div className="flex items-start ml-1">
           <button
